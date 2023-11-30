@@ -390,7 +390,8 @@ bool QuickResponseTargetingProgram::SetupBasics(int Year, int Month, int Day)
 
 void QuickResponseTargetingProgram::LoadLVTargetingObjectives(std::string filename)
 {
-	std::ifstream myfile(filename.c_str());
+	std::string fullpath = "./Projects/" + filename;
+	std::ifstream myfile(fullpath);
 
 	if (myfile.is_open() == false) return;
 
