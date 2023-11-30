@@ -1805,7 +1805,7 @@ void ApolloTrajectoryDesignProgram::ExportLVDataSet(std::string project) const
 	//Output to file
 	std::ofstream myfile;
 
-	snprintf(Buff, 127, "%s-LVTargetingObjectives.txt", project.c_str());
+	snprintf(Buff, 127, "./Projects/%s-LVTargetingObjectives.txt", project.c_str());
 	myfile.open(Buff);
 
 	for (unsigned i = 0; i < data.size(); i++)
@@ -1833,7 +1833,7 @@ void ApolloTrajectoryDesignProgram::ExportSFPDataSets(std::string project) const
 	char Buff[128];
 	std::ofstream myfile;
 
-	snprintf(Buff, 128, "%s-SFP.txt", project.c_str());
+	snprintf(Buff, 128, "./Projects/%s-SFP.txt", project.c_str());
 	myfile.open(Buff);
 
 	for (unsigned i = 0; i < SFPDataSets.size(); i++)
