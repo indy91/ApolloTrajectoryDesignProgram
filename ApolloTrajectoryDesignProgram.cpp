@@ -2047,10 +2047,12 @@ bool ApolloTrajectoryDesignProgram::LoadMSFCPresetTape(std::string filename, MSF
 	//Return true if successful
 
 	std::ifstream myfile;
-	std::string line;
+	std::string fullpath, line;
 	int i;
 
-	myfile.open(filename.c_str());
+	fullpath = "./Projects/" + filename;
+
+	myfile.open(fullpath);
 
 	if (myfile.is_open() == false) return false;
 

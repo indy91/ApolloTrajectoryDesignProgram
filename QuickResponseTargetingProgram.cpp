@@ -1253,6 +1253,8 @@ void QuickResponseTargetingProgram::PLOT()
 	//Open gnuplot
 	FILE* pipe = _popen("D:\\Programme\\gnuplot\\bin\\gnuplot", "w"); // -persist
 
+	if (pipe == NULL) return;
+
 	//Save 32 plots
 	PLOTUtility(pipe, "DELTL1 vs DECT1", "Target Declination (1st opportunity)", "DELTL1", 1, "DECT1", 1, 1);
 	PLOTUtility(pipe, "DELTL2 vs DECT2", "Target Declination (2nd opportunity)", "DELTL2", 1, "DECT2", 1, 2);
