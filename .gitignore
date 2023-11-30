@@ -1,0 +1,20 @@
+## global folders ##
+Debug
+Release
+lib
+.vs
+*.user
+Projects
+Plots
+Saves
+
+## root files ##
+/*.bin
+/*.cfg
+/*.dat
+/*.dll
+/*.exe
+/*.lnk
+/*.log
+/*.exe.metagen
+/*.pdb
