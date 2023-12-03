@@ -1824,8 +1824,8 @@ void ApolloTrajectoryDesignProgram::SaveData()
 
 void ApolloTrajectoryDesignProgram::DeleteStoredData()
 {
-	SFPDataSets.pop_back();
-	LVTargetingDataTable.pop_back();
+	if (SFPDataSets.size() > 0) SFPDataSets.pop_back();
+	if (LVTargetingDataTable.size() > 0) LVTargetingDataTable.pop_back();
 }
 
 void ApolloTrajectoryDesignProgram::ExportSFPDataSets(std::string project) const
