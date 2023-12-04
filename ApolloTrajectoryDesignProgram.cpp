@@ -266,7 +266,8 @@ int ApolloTrajectoryDesignProgram::OptimizedFullMission(const PerformanceData& p
 	out.Launchtime = iter_arr.T_L;
 	out.TLIIgnitionTime = iter_arr.sv_TLI_Ignition.GMT - iter_arr.T_L;
 	out.TLICutoffTime = iter_arr.sv_TLI_Cutoff.GMT - iter_arr.T_L;
-	out.PCtime = iter_arr.sv_PC.GMT - iter_arr.T_L;
+	out.GMT_PC = iter_arr.sv_PC.GMT;
+	out.GET_PC = iter_arr.sv_PC.GMT - iter_arr.T_L;
 	out.T_LOI2 = iter_arr.sv_LOI2.GMT - iter_arr.T_L;
 	out.LandingTime = iter_arr.sv_LLS.GMT - iter_arr.T_L;
 

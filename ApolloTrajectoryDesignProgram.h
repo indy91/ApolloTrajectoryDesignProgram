@@ -41,7 +41,8 @@ struct ConvergedMissionDisplay
 	double TLIIgnitionTime = 0.0; //GET
 	double TLICutoffTime = 0.0; //GET
 
-	double PCtime = 0.0; //GET
+	double GET_PC = 0.0; //GET
+	double GMT_PC = 0.0; //GMT
 	double lat_PC = 0.0; //deg
 
 	double dv_LOI1 = 0.0; //ft/s
