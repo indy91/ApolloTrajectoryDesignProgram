@@ -93,7 +93,7 @@ void QuickResponseTargetingProgram::RunTargetingOption(std::string project, Perf
 
 		//TRAJECTORY SELECTION (COPLANAR FREE RETURN AND HYPERSURFACE)
 		//Search III: first or second opportunity coplanar
-		iter_arr.sigma = 6.0 * RAD;
+		iter_arr.sigma = 7.0 * RAD;
 		if (SplitTimeOption == 1)
 		{
 			GETSET(1, obj);
@@ -110,14 +110,14 @@ void QuickResponseTargetingProgram::RunTargetingOption(std::string project, Perf
 		}
 
 		//Search IV: Hypersurface
-		HYPSRF(0);
+		/*HYPSRF(0);
 
 		if (HypersurfaceSearch())
 		{
 			//Error
 			continue;
 		}
-		HYPSRF(1);
+		HYPSRF(1);*/
 
 		//Store and punch TLI presetting data
 		if (SplitTimeOption == 1)
@@ -166,11 +166,11 @@ void QuickResponseTargetingProgram::RunTargetingOption(std::string project, Perf
 				//Error
 				continue;
 			}
-			if (HypersurfaceSearch())
+			/*if (HypersurfaceSearch())
 			{
 				//Error
 				continue;
-			}
+			}*/
 			OPPEND(i, 2);
 		}
 		else if (SplitTimeOption == 2)
@@ -1082,7 +1082,7 @@ void QuickResponseTargetingProgram::OPPEND(int LAZ, int opp)
 	}
 
 	//Integrate backwards to restart prep
-	enckein.AnchorVector = HBLOCK.sv_TLI_Ignition;
+	enckein.AnchorVector = iter_arr.sv_TLI_Ignition;
 	enckein.GMTBASE = iter_arr.GMTBASE;
 	enckein.GMTLO = iter_arr.LTS;
 	enckein.MinIntegTime = 0.0;
@@ -1131,9 +1131,9 @@ void QuickResponseTargetingProgram::OPPEND(int LAZ, int opp)
 	OUTPUT.data[opp - 1][LAZ].C3_FT = OUTPUT.data[opp - 1][LAZ].C3_KM * pow(1000.0 / OrbMech::FT2M, 2);
 	OUTPUT.data[opp - 1][LAZ].EN = e;
 
-	OUTPUT.data[opp - 1][LAZ].RN = length(HBLOCK.sv_TLI_Ignition.R) * OrbMech::R_Earth / OrbMech::FT2M;
-	OUTPUT.data[opp - 1][LAZ].DT_EOI_TB6 = ((HBLOCK.sv_TLI_Ignition.GMT - DT_TB6_TIG) - (iter_arr.LTS + iter_arr.DT_L)) * HRS;
-	OUTPUT.data[opp - 1][LAZ].DT_MRS_TLI = (HBLOCK.sv_TLI_Cutoff.GMT - (HBLOCK.sv_TLI_Ignition.GMT + iter_arr.T_MRS)) * HRS;
+	OUTPUT.data[opp - 1][LAZ].RN = length(iter_arr.sv_TLI_Ignition.R) * OrbMech::R_Earth / OrbMech::FT2M;
+	OUTPUT.data[opp - 1][LAZ].DT_EOI_TB6 = ((iter_arr.sv_TLI_Ignition.GMT - DT_TB6_TIG) - (iter_arr.LTS + iter_arr.DT_L)) * HRS;
+	OUTPUT.data[opp - 1][LAZ].DT_MRS_TLI = (iter_arr.sv_TLI_Cutoff.GMT - (iter_arr.sv_TLI_Ignition.GMT + iter_arr.T_MRS)) * HRS;
 
 	OUTPUT.data[opp - 1][LAZ].TAU = (iter_arr.Weight_TLI_Ignition / iter_arr.WDOT_SIVB - T_MRS) * HRS;
 	OUTPUT.data[opp - 1][LAZ].T_u = iter_arr.T_u;
