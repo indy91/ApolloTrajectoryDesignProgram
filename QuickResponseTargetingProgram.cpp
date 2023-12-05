@@ -184,11 +184,11 @@ void QuickResponseTargetingProgram::RunTargetingOption(std::string project, Perf
 				//Error
 				continue;
 			}
-			if (HypersurfaceSearch())
+			/*if (HypersurfaceSearch())
 			{
 				//Error
 				continue;
-			}
+			}*/
 			OPPEND(i, 1);
 		}
 		else
@@ -202,11 +202,11 @@ void QuickResponseTargetingProgram::RunTargetingOption(std::string project, Perf
 				//Error
 				continue;
 			}
-			if (HypersurfaceSearch())
+			/*if (HypersurfaceSearch())
 			{
 				//Error
 				continue;
-			}
+			}*/
 
 			OPPEND(i, 1);
 
@@ -218,11 +218,11 @@ void QuickResponseTargetingProgram::RunTargetingOption(std::string project, Perf
 				//Error
 				continue;
 			}
-			if (HypersurfaceSearch())
+			/*if (HypersurfaceSearch())
 			{
 				//Error
 				continue;
-			}
+			}*/
 
 			OPPEND(i, 2);
 		}
