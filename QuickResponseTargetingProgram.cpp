@@ -1593,25 +1593,25 @@ void QuickResponseTargetingProgram::WritePresettings(int AltitudeOption, const M
 		myfile << Buff << std::endl;
 	}
 
-	sprintf_s(Buff, 128, "LVDC_TDS1 %e", tape.TDS1);
+	sprintf_s(Buff, 128, "LVDC_t_DS1 %e", tape.TDS1);
 	myfile << Buff << std::endl;
-	sprintf_s(Buff, 128, "LVDC_TDS2 %e", tape.TDS2);
+	sprintf_s(Buff, 128, "LVDC_t_DS2 %e", tape.TDS2);
 	myfile << Buff << std::endl;
-	sprintf_s(Buff, 128, "LVDC_TDS3 %e", tape.TDS3);
-	myfile << Buff << std::endl;
-
-	sprintf_s(Buff, 128, "LVDC_TD1 %e", tape.TD1);
-	myfile << Buff << std::endl;
-	sprintf_s(Buff, 128, "LVDC_TD2 %e", tape.TD2);
-	myfile << Buff << std::endl;
-	sprintf_s(Buff, 128, "LVDC_TD3 %e", tape.TD3);
+	sprintf_s(Buff, 128, "LVDC_t_DS3 %e", tape.TDS3);
 	myfile << Buff << std::endl;
 
-	sprintf_s(Buff, 128, "LVDC_TSD1 %e", tape.TSD1);
+	sprintf_s(Buff, 128, "LVDC_t_D1 %e", tape.TD1);
 	myfile << Buff << std::endl;
-	sprintf_s(Buff, 128, "LVDC_TSD2 %e", tape.TSD2);
+	sprintf_s(Buff, 128, "LVDC_t_D2 %e", tape.TD2);
 	myfile << Buff << std::endl;
-	sprintf_s(Buff, 128, "LVDC_TSD3 %e", tape.TSD3);
+	sprintf_s(Buff, 128, "LVDC_t_D3 %e", tape.TD3);
+	myfile << Buff << std::endl;
+
+	sprintf_s(Buff, 128, "LVDC_t_SD1 %e", tape.TSD1);
+	myfile << Buff << std::endl;
+	sprintf_s(Buff, 128, "LVDC_t_SD2 %e", tape.TSD2);
+	myfile << Buff << std::endl;
+	sprintf_s(Buff, 128, "LVDC_t_SD3 %e", tape.TSD3);
 	myfile << Buff << std::endl;
 
 	myfile.close();
