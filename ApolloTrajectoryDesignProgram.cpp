@@ -266,6 +266,7 @@ int ApolloTrajectoryDesignProgram::OptimizedFullMission(const PerformanceData& p
 	out.Launchtime = iter_arr.T_L;
 	out.TLIIgnitionTime = iter_arr.sv_TLI_Ignition.GMT - iter_arr.T_L;
 	out.TLICutoffTime = iter_arr.sv_TLI_Cutoff.GMT - iter_arr.T_L;
+	out.dv_TLI = iter_arr.dv_TLI / OrbMech::FPS2ERPH;
 	out.GMT_PC = iter_arr.sv_PC.GMT;
 	out.GET_PC = iter_arr.sv_PC.GMT - iter_arr.T_L;
 	out.T_LOI2 = iter_arr.sv_LOI2.GMT - iter_arr.T_L;
@@ -848,6 +849,7 @@ bool ApolloTrajectoryDesignProgram::IntegratedTrajectoryComputer(std::vector<dou
 	vars->sv_TLI_Cutoff = tliout.sv2;
 	vars->Weight_TLI_Cutoff = tliout.W2;
 	vars->T_u = tliout.T;
+	vars->dv_TLI = tliout.DV;
 
 	arr[3] = vars->Weight_TLI_Cutoff;
 

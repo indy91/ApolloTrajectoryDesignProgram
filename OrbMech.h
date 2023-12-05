@@ -288,6 +288,7 @@ namespace OrbMech
 		VECTOR3 T;
 		double alpha;
 		double beta;
+		double DV;
 	};
 
 	//Greenwich hour angle

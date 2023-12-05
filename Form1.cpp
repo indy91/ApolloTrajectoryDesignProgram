@@ -135,6 +135,7 @@ namespace CppCLRWinFormsProject {
 			this->richTextBox2->Text = "Launch: " + disp.Launchtime.ToString("F5") + "h GMT" + "\r\n";
 			this->richTextBox2->Text += "TLI Ignition: " + disp.TLIIgnitionTime.ToString("F5") + "h GET" + "\r\n";
 			this->richTextBox2->Text += "TLI Cutoff: " + disp.TLICutoffTime.ToString("F5") + "h GET" + "\r\n";
+			this->richTextBox2->Text += "TLI DV: " + disp.dv_TLI.ToString("F1") + " ft/s" + "\r\n";
 			this->richTextBox2->Text += "PC: " + disp.GMT_PC.ToString("F5") + "h GMT" + "\r\n";
 			this->richTextBox2->Text += "PC: " + disp.GET_PC.ToString("F5") + "h GET" + "\r\n";
 			this->richTextBox2->Text += "Latitude of PC: " + disp.lat_PC.ToString("F2") + " deg" + "\r\n";

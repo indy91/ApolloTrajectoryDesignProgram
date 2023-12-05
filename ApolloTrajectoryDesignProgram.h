@@ -40,6 +40,7 @@ struct ConvergedMissionDisplay
 
 	double TLIIgnitionTime = 0.0; //GET
 	double TLICutoffTime = 0.0; //GET
+	double dv_TLI = 0.0; //ft/s
 
 	double GET_PC = 0.0; //GET
 	double GMT_PC = 0.0; //GMT
@@ -209,6 +210,7 @@ struct ATDPGeneralizedIteratorArray
 	OrbMech::EphemerisData sv_EI; //Entry interface state vector
 	OrbMech::EphemerisData sv_PG; //Earth return perigee state vector
 	double Weight_TLI_Ignition, Weight_TLI_Cutoff;
+	double dv_TLI;
 	VECTOR3 T_u; //Hypersurface target vector
 	VECTOR3 R_EM; //Unit vector along the Earth-to-Moon line at periselenum arrival
 	double azi_approach;

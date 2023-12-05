@@ -940,6 +940,7 @@ namespace OrbMech
 		out.W2 = W - WDOT * (T_B - DT_B2);
 		out.alpha = alpha;
 		out.beta = beta;
+		out.DV = DV;
 	}
 
 	void BURN(VECTOR3 R, VECTOR3 V, double dv, double dgamma, double dpsi, double isp, double& dv_R, double& mfm0, VECTOR3& RF, VECTOR3& VF)
