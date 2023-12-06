@@ -259,9 +259,27 @@ int ApolloTrajectoryDesignProgram::OptimizedFullMission(const PerformanceData& p
 	converr = ConvergeTransearthInjection(false, false, 0.0, 2800.0 * OrbMech::FPS2ERPH, dpsi_TEI, in.DT_TEC);
 	if (converr) return 5;
 
-	//Converge a TEI on the desired splashdown longitude and optimize DV
-	converr = ConvergeTransearthInjection(true, true, iter_arr.DT_TEI, iter_arr.dv_TEI, iter_arr.dpsi_TEI, in.DT_TEC);
+	//Converge on approximate splashdown longitude
+	double dlng, ddt_TEC, DT_TEC;
+
+	dlng = iter_arr.lng_spl_des - iter_arr.lng_ip_pr;
+	while (dlng > PI)
+	{
+		dlng -= PI2;
+	}
+	while (dlng < -PI)
+	{
+		dlng += PI2;
+	}
+	ddt_TEC = dlng / OrbMech::w_Earth;
+	DT_TEC = in.DT_TEC - ddt_TEC;
+
+	converr = ConvergeTransearthInjection(false, false, iter_arr.DT_TEI, iter_arr.dv_TEI, iter_arr.dpsi_TEI, DT_TEC);
 	if (converr) return 6;
+
+	//Converge a TEI on the desired splashdown longitude and optimize DV
+	converr = ConvergeTransearthInjection(true, true, iter_arr.DT_TEI, iter_arr.dv_TEI, iter_arr.dpsi_TEI, DT_TEC);
+	if (converr) return 7;
 
 	out.Launchtime = iter_arr.T_L;
 	out.TLIIgnitionTime = iter_arr.sv_TLI_Ignition.GMT - iter_arr.T_L;

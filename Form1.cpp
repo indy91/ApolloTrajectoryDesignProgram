@@ -128,7 +128,36 @@ namespace CppCLRWinFormsProject {
 
 		if (err)
 		{
-			this->richTextBox2->Text = "Error " + err.ToString("D");
+			switch (err)
+			{
+			case 1:
+				this->richTextBox2->Text = "Error: First-guess logic failed to converge";
+				break;
+			case 2:
+				this->richTextBox2->Text = "Error: Initial guess trajectory failed to converge";
+				break;
+			case 25:
+				this->richTextBox2->Text = "Error: Initial guess free-return trajectory failed to converge";
+				break;
+			case 3:
+				this->richTextBox2->Text = "Error: Optimized full mission failed to converge";
+				break;
+			case 4:
+				this->richTextBox2->Text = "Error: DPS abort (PC+2) failed to converge";
+				break;
+			case 5:
+				this->richTextBox2->Text = "Error: Initial TEI trajectory failed to converge";
+				break;
+			case 6:
+				this->richTextBox2->Text = "Error: TEI trajectory failed to converge on splashdown site";
+				break;
+			case 7:
+				this->richTextBox2->Text = "Error: Final TEI trajectory failed to converge";
+				break;
+			default:
+				this->richTextBox2->Text = "Error: Unknown error";
+				break;
+			}
 		}
 		else
 		{

@@ -1251,7 +1251,7 @@ void QuickResponseTargetingProgram::PLOTUtility(FILE* file, std::string filename
 void QuickResponseTargetingProgram::PLOT()
 {
 	//Open gnuplot
-	FILE* pipe = _popen("D:\\Programme\\gnuplot\\bin\\gnuplot", "w"); // -persist
+	FILE* pipe = _popen("gnuplot", "w"); // -persist
 
 	if (pipe == NULL) return;
 
