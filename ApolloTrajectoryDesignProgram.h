@@ -286,7 +286,7 @@ protected:
 	void RVIO(bool vecinp, VECTOR3& R, VECTOR3& V, double& r, double& v, double& theta, double& phi, double& gamma, double& psi) const;
 
 	double AzimuthDifference(VECTOR3 R_u, VECTOR3 U1, VECTOR3 U2) const;
-	double ApolloTrajectoryDesignProgram::VariableLaunchAzimith(const MSFCPresetTape& tape, double T_L) const;
+	double VariableLaunchAzimith(const MSFCPresetTape& tape, double T_L) const;
 
 	LVTargetingObjectives WriteLVTargetingObjectives(double LaunchAzimuth, int Window) const;
 	SFPDataSet WriteSFPTable(double LaunchAzimuth, int Window) const;

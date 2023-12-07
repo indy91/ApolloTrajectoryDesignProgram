@@ -335,4 +335,7 @@ namespace OrbMech
 	void TLIBRN(EphemerisData sv1, double C3, double sigma, double delta, double F, double F_I, double W_I, double WDOT, double T_MRS, TLIBRNOutput &out);
 	//Burn simulation
 	void BURN(VECTOR3 R, VECTOR3 V, double dv, double dgamma, double dpsi, double isp, double& dv_R, double& mfm0, VECTOR3& RF, VECTOR3& VF);
+
+	//Least squares
+	void LeastSquares(double* x, double* y, int n, int m, double *beta);
 }

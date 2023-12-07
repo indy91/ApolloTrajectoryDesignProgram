@@ -962,4 +962,159 @@ namespace OrbMech
 		dv_R = sqrt(dv * dv + 4.0 * v * (v + dv) * (pow(sin(dgamma / 2.0), 2) + (h * h * cos(dgamma) - h * d * sin(dgamma)) / (r * r * v * v) * pow(sin(dpsi / 2.0), 2)));
 		mfm0 = exp(-dv_R / (isp * OrbMech::G0ER));
 	}
+
+	void LUPInvert(double** A, int* P, int N, double** IA) {
+
+		for (int j = 0; j < N; j++) {
+			for (int i = 0; i < N; i++) {
+				if (P[i] == j)
+					IA[i][j] = 1.0;
+				else
+					IA[i][j] = 0.0;
+
+				for (int k = 0; k < i; k++)
+					IA[i][j] -= A[i][k] * IA[k][j];
+			}
+
+			for (int i = N - 1; i >= 0; i--) {
+				for (int k = i + 1; k < N; k++)
+					IA[i][j] -= A[i][k] * IA[k][j];
+
+				IA[i][j] = IA[i][j] / A[i][i];
+			}
+		}
+	}
+
+	int LUPDecompose(double** A, int N, double Tol, int* P)
+	{
+
+		int i, j, k, imax;
+		double maxA, * ptr, absA;
+
+		for (i = 0; i <= N; i++)
+			P[i] = i; //Unit permutation matrix, P[N] initialized with N
+
+		for (i = 0; i < N; i++) {
+			maxA = 0.0;
+			imax = i;
+
+			for (k = i; k < N; k++)
+				if ((absA = fabs(A[k][i])) > maxA) {
+					maxA = absA;
+					imax = k;
+				}
+
+			if (maxA < Tol)
+			{
+				return 0; //failure, matrix is degenerate
+			}
+
+			if (imax != i) {
+				//pivoting P
+				j = P[i];
+				P[i] = P[imax];
+				P[imax] = j;
+
+				//pivoting rows of A
+				ptr = A[i];
+				A[i] = A[imax];
+				A[imax] = ptr;
+
+				//counting pivots starting from N (for determinant)
+				P[N]++;
+			}
+
+			for (j = i + 1; j < N; j++) {
+				A[j][i] /= A[i][i];
+
+				for (k = i + 1; k < N; k++)
+					A[j][k] -= A[j][i] * A[i][k];
+			}
+		}
+
+		return 1;  //decomposition done
+	}
+
+	void LeastSquares(double* x, double* y, int n, int m, double* beta)
+	{
+		int i, j, k;
+
+		double** X = new double* [n];
+		for (i = 0; i < n; i++)
+		{
+			X[i] = new double[m];
+		}
+
+		double** XTX = new double* [m];
+		double** XTXI = new double* [m];
+		for (i = 0; i < m; i++)
+		{
+			XTX[i] = new double[m];
+			XTXI[i] = new double[m];
+		}
+
+		double** XTXIXT = new double* [m];
+		for (i = 0; i < m; i++)
+		{
+			XTXIXT[i] = new double[n];
+		}
+		int* P = new int[m + 1];
+
+		//Get X matrix (n x m)
+		for (i = 0; i < n; i++)
+		{
+			for (j = 0; j < m; j++)
+			{
+				X[i][j] = pow(x[i], j);
+			}
+		}
+
+		//Get XTX matrix (m x m)
+		for (i = 0; i < m; i++)
+		{
+			for (j = 0; j < m; j++)
+			{
+				XTX[i][j] = 0.0;
+
+				for (k = 0; k < n; k++)
+				{
+					XTX[i][j] += X[k][i] * X[k][j];
+				}
+			}
+		}
+
+		//Invert XTX (m x m)
+		LUPDecompose(XTX, m, 0.0, P);
+		LUPInvert(XTX, P, m, XTXI);
+
+		//Multiply with XT (m x n)
+		for (i = 0; i < m; i++)
+		{
+			for (j = 0; j < n; j++)
+			{
+				XTXIXT[i][j] = 0.0;
+
+				for (k = 0; k < m; k++)
+				{
+					XTXIXT[i][j] += XTXI[k][i] * X[j][k];
+				}
+			}
+		}
+
+		//Get vector
+		for (i = 0; i < m; i++)
+		{
+			beta[i] = 0.0;
+			for (j = 0; j < n; j++)
+			{
+				beta[i] += XTXIXT[i][j] * y[j];
+			}
+		}
+
+		delete[] X;
+		delete[] XTX;
+		delete[] XTXI;
+		delete[] XTXIXT;
+		delete[] P;
+	}
 }

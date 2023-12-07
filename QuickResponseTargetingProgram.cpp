@@ -254,13 +254,8 @@ void QuickResponseTargetingProgram::RunTargetingOption(std::string project, Perf
 	presettings.TLO = OUTPUT.data[0][0].LaunchTime;
 	presettings.RAO = OUTPUT.data[0][0].RAO;
 
-	//TBD: Analytical launch azimuth model
-	j = 0;
-	for (i = 0; i < OUTPUT.num; i++)
-	{
-		presettings.AZ[i] = OUTPUT.data[0][i].LaunchAzimuth;
-		presettings.TD_AZ[i] = OUTPUT.data[0][i].LaunchTime - OUTPUT.data[0][0].LaunchTime;
-	}
+	//Build launch azimuth data
+	AnalyticalLaunchAzimuthModel(presettings);
 
 	for (j = 0; j < OUTPUT.num; j++)
 	{
@@ -296,32 +291,11 @@ void QuickResponseTargetingProgram::RunTargetingOption(std::string project, Perf
 	presettings.T3R2 = OUTPUT.data[1][0].DT_MRS_TLI;
 	presettings.TST2 = OUTPUT.data[1][0].DT_EOI_TB6 - DT_TST_TB6;
 
-	presettings.NumAzi = OUTPUT.num;
 	presettings.DVBR1 = presettings.DVBR2 = 3.44; //TBD
 	presettings.AZO = 72.0;
 	presettings.AZS = 36.0;
 	presettings.f[0] = 32.55754; presettings.f[1] = -15.84615; presettings.f[2] = 11.6478; presettings.f[3] = 9.89097; presettings.f[4] = -5.11143;
 	presettings.g[0] = 123.1935; presettings.g[1] = -55.06485; presettings.g[2] = 26.01324; presettings.g[3] = 26.01324; presettings.g[4] = -1.47591;
-
-	//For now:
-	presettings.h1[0] = presettings.AZ[0];
-	presettings.h1[1] = presettings.AZ[1] - presettings.AZ[0];
-
-	presettings.h2[0] = presettings.AZ[1];
-	presettings.h2[1] = presettings.AZ[2] - presettings.AZ[1];
-
-	presettings.TDS1 = presettings.TP[1];
-	presettings.TDS2 = presettings.TP[2];
-	presettings.TDS3 = presettings.TP[3];
-	presettings.TD1 = 0.0;
-	presettings.TD2 = presettings.TDS1;
-	presettings.TD3 = presettings.TDS2;
-	presettings.TSD1 = presettings.TDS1;
-	presettings.TSD2 = presettings.TDS2 - presettings.TDS1;
-	if (presettings.TDS3 != 0.0)
-	{
-		presettings.TSD3 = presettings.TDS3 - presettings.TDS2;
-	}
 
 	presets = presettings;
 
@@ -1141,6 +1115,8 @@ void QuickResponseTargetingProgram::OPPEND(int LAZ, int opp)
 	OUTPUT.data[opp - 1][LAZ].F = f*DEG;
 	OUTPUT.data[opp - 1][LAZ].ALPHA = alpha * DEG;
 	OUTPUT.data[opp - 1][LAZ].BETA = beta * DEG;
+
+	OUTPUT.data[opp - 1][LAZ].GMT_PC = iter_arr.sv_PC.GMT * HRS;
 }
 
 void QuickResponseTargetingProgram::PLOTUtility(FILE* file, std::string filename, std::string title, std::string xname, int xtype, std::string yname, int ytype, int opp) const
@@ -1296,6 +1272,203 @@ void QuickResponseTargetingProgram::PLOT()
 	//fprintf(pipe, "plot tan(x)\n");
 
 	_pclose(pipe);
+}
+
+void QuickResponseTargetingProgram::AnalyticalLaunchAzimuthModel(MSFCPresetTape& preset)
+{
+	//For now, just build linear segments
+	double az_min, az_max, daz, az, x0, x1, y0, y1;
+	unsigned i, j;
+	const int num = 53;
+
+	az_min = OUTPUT.data[0][0].LaunchAzimuth;
+	az_max = OUTPUT.data[0][OUTPUT.num - 1].LaunchAzimuth;
+	daz = (az_max - az_min) / (num - 1);
+	az = az_min;
+	j = 0;
+
+	for (i = 0; i < num; i++)
+	{
+		while (az > OUTPUT.data[0][j + 1].LaunchAzimuth && j < OUTPUT.num - 2)
+		{
+			j++;
+		}
+
+		preset.AZ[i] = az;
+
+		x0 = OUTPUT.data[0][j].LaunchAzimuth;
+		x1 = OUTPUT.data[0][j + 1].LaunchAzimuth;
+		y0 = OUTPUT.data[0][j].LaunchTime;
+		y1 = OUTPUT.data[0][j + 1].LaunchTime;
+
+		preset.TD_AZ[i] = y0 + (az - x0) * (y1 - y0) / (x1 - x0) - preset.TLO;
+
+		az += daz;
+	}
+
+	preset.NumAzi = num;
+
+	//And then build the presettings
+	//For now, just take specific data points in the table
+
+	int num1 = 0;
+	int num2 = 17;
+	int num3 = 34;
+	int num4 = 52;
+
+	preset.h1[0] = preset.AZ[num1];
+	preset.h1[1] = preset.AZ[num2] - preset.AZ[num1];
+
+	preset.h2[0] = preset.AZ[num2];
+	preset.h2[1] = preset.AZ[num3] - preset.AZ[num2];
+
+	preset.h3[0] = preset.AZ[num3];
+	preset.h3[1] = preset.AZ[num4] - preset.AZ[num3];
+
+	preset.TDS1 = preset.TD_AZ[num2];
+	preset.TDS2 = preset.TD_AZ[num3];
+	preset.TDS3 = preset.TD_AZ[num4];
+	preset.TD1 = preset.TD_AZ[num1];
+	preset.TD2 = preset.TD_AZ[num2];
+	preset.TD3 = preset.TD_AZ[num3];
+	preset.TSD1 = preset.TDS1;
+	preset.TSD2 = preset.TDS2 - preset.TDS1;
+	preset.TSD3 = preset.TDS3 - preset.TDS2;
+
+	double xarr[17], yarr[17];
+
+	//First segment
+	for (i = 0; i < 17; i++)
+	{
+		xarr[i] = (preset.TD_AZ[num1 + i] - preset.TD1) / preset.TSD1;
+		yarr[i] = preset.AZ[num1 + i];
+	}
+	OrbMech::LeastSquares(xarr, yarr, 17, 5, preset.h1);
+
+	//Second segment
+	for (i = 0; i < 17; i++)
+	{
+		xarr[i] = (preset.TD_AZ[num2 + i] - preset.TD2) / preset.TSD2;
+		yarr[i] = preset.AZ[num2 + i];
+	}
+	OrbMech::LeastSquares(xarr, yarr, 17, 5, preset.h2);
+	//Third segment
+	for (i = 0; i < 17; i++)
+	{
+		xarr[i] = (preset.TD_AZ[num3 + i] - preset.TD3) / preset.TSD3;
+		yarr[i] = preset.AZ[num3 + i];
+	}
+	OrbMech::LeastSquares(xarr, yarr, 17, 5, preset.h3);
+
+	//DEBUG PLOT
+
+	FILE* pipe = _popen("gnuplot", "w"); // -persist
+
+	if (pipe == NULL) return;
+
+	char Buff[128];
+
+	std::string filename = "Azimuth Comparison";
+	std::string title = "Analytic launch azimuth model";
+	std::string xname = "Launch Time";
+	std::string yname = "Launch Azimuth";
+
+	//Set up data save
+	fprintf(pipe, "set terminal png size 1920,1080;\n");
+	//Set file name
+	sprintf_s(Buff, 128, "set output 'Plots/%s.png';\n", filename.c_str());
+	fprintf(pipe, Buff);
+	//Set title
+	sprintf_s(Buff, 128, "set title '%s';\n", title.c_str());
+	fprintf(pipe, Buff);
+	//Set labels
+	sprintf_s(Buff, 128, "set xlabel '%s';\n", xname.c_str());
+	fprintf(pipe, Buff);
+	sprintf_s(Buff, 128, "set ylabel '%s';\n", yname.c_str());
+	fprintf(pipe, Buff);
+	//Plot
+	fprintf(pipe, "plot '-' with points title \"Input\", '-' with lines title \"Table\", '-' with lines title \"LVDC\"\n");
+
+	for (i = 0; i < OUTPUT.num; i++)
+	{
+		fprintf(pipe, "%lf %lf\n", OUTPUT.data[0][i].LaunchTime, OUTPUT.data[0][i].LaunchAzimuth);
+	}
+	fprintf(pipe, "e\n");
+
+	for (i = 0; i < num; i++)
+	{
+		fprintf(pipe, "%lf %lf\n", preset.TLO + preset.TD_AZ[i], preset.AZ[i]);
+	}
+	fprintf(pipe, "e\n");
+
+	for (i = 0; i < num; i++)
+	{
+		fprintf(pipe, "%lf %lf\n", preset.TLO + preset.TD_AZ[i], VariableLaunchAzimith(preset, preset.TLO + preset.TD_AZ[i]));
+	}
+	fprintf(pipe, "e\n");
+
+	fflush(pipe);
+
+	_pclose(pipe);
+}
+
+double QuickResponseTargetingProgram::VariableLaunchAzimith(const MSFCPresetTape& tape, double T_L) const
+{
+	double T_D, A_Z;
+	int i, N;
+
+	T_D = T_L - tape.TLO;
+
+	//Check if outside limits
+	if (T_D < tape.TDS1)
+	{
+		i = 0;
+
+		if (T_D < 0.0)
+		{
+			T_D = 0.0;
+		}
+	}
+	else if (T_D < tape.TDS2)
+	{
+		i = 1;
+	}
+	else if (T_D <= tape.TDS3)
+	{
+		i = 2;
+	}
+	else
+	{
+		T_D = tape.TDS3;
+		i = 2;
+	}
+
+	//Compute launch azimuth
+	A_Z = 0.0;
+
+	switch (i)
+	{
+	case 0:
+		for (N = 0; N < 5; N++)
+		{
+			A_Z += tape.h1[N] * pow((T_D - tape.TD1) / tape.TSD1, N);
+		}
+		break;
+	case 1:
+		for (N = 0; N < 5; N++)
+		{
+			A_Z += tape.h2[N] * pow((T_D - tape.TD2) / tape.TSD2, N);
+		}
+		break;
+	default:
+		for (N = 0; N < 5; N++)
+		{
+			A_Z += tape.h3[N] * pow((T_D - tape.TD3) / tape.TSD3, N);
+		}
+		break;
+	}
+
+	return A_Z;
 }
 
 void QuickResponseTargetingProgram::WritePresetTape(const MSFCPresetTape& tape, std::string filename)

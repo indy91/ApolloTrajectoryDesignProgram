@@ -128,6 +128,8 @@ protected:
 	void OPPEND(int LAZ, int opp);
 	void PLOTUtility(FILE* file, std::string filename, std::string title, std::string xname, int xtype, std::string yname, int ytype, int opp) const;
 	void PLOT();
+	void AnalyticalLaunchAzimuthModel(MSFCPresetTape &preset);
+	double VariableLaunchAzimith(const MSFCPresetTape& tape, double T_L) const;
 
 	void WritePresetTape(const MSFCPresetTape &tape, std::string filename);
 	void WritePresettings(int AltitudeOption, const MSFCPresetTape& tape, std::string filename);
@@ -181,6 +183,8 @@ protected:
 		double F; //deg, true anomaly
 		double ALPHA; //deg
 		double BETA; //deg
+
+		double GMT_PC; //sec
 	};
 
 	struct OutputDataArray
