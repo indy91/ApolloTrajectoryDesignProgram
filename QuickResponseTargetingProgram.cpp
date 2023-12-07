@@ -281,7 +281,6 @@ void QuickResponseTargetingProgram::RunTargetingOption(std::string project, Perf
 	presettings.RN1 = OUTPUT.data[0][0].RN;
 	presettings.TAU3R1 = OUTPUT.data[0][0].TAU;
 	presettings.T3R1 = OUTPUT.data[0][0].DT_MRS_TLI;
-	presettings.TST1 = OUTPUT.data[0][0].DT_EOI_TB6 - DT_TST_TB6;
 
 	presettings.F2 = OUTPUT.data[1][0].F;
 	presettings.ALPHATS2 = OUTPUT.data[1][0].ALPHA;
@@ -289,7 +288,31 @@ void QuickResponseTargetingProgram::RunTargetingOption(std::string project, Perf
 	presettings.RN2 = OUTPUT.data[1][0].RN;
 	presettings.TAU3R2 = OUTPUT.data[1][0].TAU;
 	presettings.T3R2 = OUTPUT.data[1][0].DT_MRS_TLI;
-	presettings.TST2 = OUTPUT.data[1][0].DT_EOI_TB6 - DT_TST_TB6;
+
+	//For time of restart prep test, use 5 minutes before the earliest time
+	double min_time;
+	unsigned k;
+	for (j = 0; j < 2; j++)
+	{
+		min_time = OUTPUT.data[j][0].DT_EOI_TB6;
+
+		for (k = 1; k < OUTPUT.num; k++)
+		{
+			if (OUTPUT.data[j][k].DT_EOI_TB6 < min_time)
+			{
+				min_time = OUTPUT.data[j][k].DT_EOI_TB6;
+			}
+		}
+
+		if (j == 0)
+		{
+			presettings.TST1 = min_time - DT_TST_TB6;
+		}
+		else
+		{
+			presettings.TST2 = min_time - DT_TST_TB6;
+		}
+	}
 
 	presettings.DVBR1 = presettings.DVBR2 = 3.44; //TBD
 	presettings.AZO = 72.0;
@@ -1181,6 +1204,9 @@ void QuickResponseTargetingProgram::PLOTUtility(FILE* file, std::string filename
 		case 10:
 			ydata[i] = OUTPUT.data[opp - 1][i].DV_TLI;
 			break;
+		case 11:
+			ydata[i] = OUTPUT.data[opp - 1][i].DT_EOI_TB6 / HRS;
+			break;
 		default:
 			ydata[i] = 0.0;
 			break;
@@ -1282,6 +1308,9 @@ void QuickResponseTargetingProgram::PLOT()
 	PLOTUtility(pipe, "WELTL2 vs PLCH2", "Plane change during TLI (2nd opportunity)", "Launch azimuth in degrees", 2, "Plane change in degrees", 9, 2);
 	PLOTUtility(pipe, "WELTL1 vs DVTLI1", "TLI Delta V (1st opportunity)", "Launch azimuth in degrees", 2, "Delta V in feet per second", 10, 1);
 	PLOTUtility(pipe, "WELTL2 vs DVTLI2", "TLI Delta V (2nd opportunity)", "Launch azimuth in degrees", 2, "Delta V in feet per second", 10, 2);
+
+	PLOTUtility(pipe, "WELTL1 vs TB6GET1", "Time of TB6 (1st opportunity)", "Launch azimuth in degrees", 2, "TB5 time of restart prep in hours", 11, 1);
+	PLOTUtility(pipe, "WELTL2 vs TB6GET2", "Time of TB6 (2nd opportunity)", "Launch azimuth in degrees", 2, "TB5 time of restart prep in hours", 11, 2);
 
 	//fprintf(pipe, "load QRTP_Plot_Script\n");
 

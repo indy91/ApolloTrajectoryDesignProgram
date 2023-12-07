@@ -144,7 +144,7 @@ protected:
 	QRTPTLIGeneralizedIteratorArray iter_arr;
 
 	const double DT_GRR = 17.0 / HRS;
-	const double DT_TST_TB6 = 10.0*60.0;
+	const double DT_TST_TB6 = 5.0*60.0;
 	const double DT_TB6_TIG = 580.5 / HRS;
 	const double ER2HR2ToKM2SEC2 = pow(OrbMech::R_Earth / 3600000.0, 2);
 
