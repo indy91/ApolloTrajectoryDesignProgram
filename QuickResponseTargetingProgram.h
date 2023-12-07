@@ -51,6 +51,7 @@ struct QRTPTLIGeneralizedIteratorArray
 	double D_BR_M;
 	VECTOR3 R_EM;
 	double D_BT_E;
+	double TLI_DV;
 
 	OrbMech::EphemerisData sv_EOI;
 	//OrbMech::EphemerisData sv_TB6;
@@ -185,6 +186,8 @@ protected:
 		double BETA; //deg
 
 		double GMT_PC; //sec
+		double delta_TLI; //deg, plane change during TLI
+		double DV_TLI; //ft/sec, DV of TLI
 	};
 
 	struct OutputDataArray

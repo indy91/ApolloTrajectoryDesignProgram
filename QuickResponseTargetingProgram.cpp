@@ -752,6 +752,7 @@ bool QuickResponseTargetingProgram::TLITrajectoryProcessor(std::vector<double>& 
 	vars->T_u = tliout.T;
 	vars->alpha = tliout.alpha;
 	vars->beta = tliout.beta;
+	vars->TLI_DV = tliout.DV;
 
 	arr[3] = vars->Weight_TLI_Cutoff;
 
@@ -1117,6 +1118,8 @@ void QuickResponseTargetingProgram::OPPEND(int LAZ, int opp)
 	OUTPUT.data[opp - 1][LAZ].BETA = beta * DEG;
 
 	OUTPUT.data[opp - 1][LAZ].GMT_PC = iter_arr.sv_PC.GMT * HRS;
+	OUTPUT.data[opp - 1][LAZ].delta_TLI = iter_arr.delta * DEG;
+	OUTPUT.data[opp - 1][LAZ].DV_TLI = iter_arr.TLI_DV / OrbMech::FPS2ERPH;
 }
 
 void QuickResponseTargetingProgram::PLOTUtility(FILE* file, std::string filename, std::string title, std::string xname, int xtype, std::string yname, int ytype, int opp) const
@@ -1171,6 +1174,12 @@ void QuickResponseTargetingProgram::PLOTUtility(FILE* file, std::string filename
 			break;
 		case 8:
 			ydata[i] = OUTPUT.data[opp - 1][i].T_u.z;
+			break;
+		case 9:
+			ydata[i] = OUTPUT.data[opp - 1][i].delta_TLI;
+			break;
+		case 10:
+			ydata[i] = OUTPUT.data[opp - 1][i].DV_TLI;
 			break;
 		default:
 			ydata[i] = 0.0;
@@ -1232,39 +1241,47 @@ void QuickResponseTargetingProgram::PLOT()
 	if (pipe == NULL) return;
 
 	//Save 32 plots
-	PLOTUtility(pipe, "DELTL1 vs DECT1", "Target Declination (1st opportunity)", "DELTL1", 1, "DECT1", 1, 1);
-	PLOTUtility(pipe, "DELTL2 vs DECT2", "Target Declination (2nd opportunity)", "DELTL2", 1, "DECT2", 1, 2);
-	PLOTUtility(pipe, "DELTL1 vs RAST1", "Target Right Ascension (1st opportunity)", "DELTL1", 1, "RAST1", 2, 1);
-	PLOTUtility(pipe, "DELTL2 vs RAST2", "Target Right Ascension (2nd opportunity)", "DELTL2", 1, "RAST2", 2, 2);
-	PLOTUtility(pipe, "DELTL1 vs COSG1", "Cosine of Perigee Angle (1st opportunity)", "DELTL1", 1, "COSG1", 3, 1);
-	PLOTUtility(pipe, "DELTL2 vs COSG2", "Cosine of Perigee Angle (2nd opportunity)", "DELTL2", 1, "COSG2", 3, 2);
-	PLOTUtility(pipe, "DELTL1 vs C3KM1", "Twice Specific Energy (1st opportunity)", "DELTL1", 1, "C3KM1", 4, 1);
-	PLOTUtility(pipe, "DELTL2 vs C3KM2", "Twice Specific Energy (2nd opportunity)", "DELTL2", 1, "C3KM2", 4, 2);
-	PLOTUtility(pipe, "DELTL1 vs PLEN1", "Eccentricity at TLI (1st opportunity)", "DELTL1", 1, "PLEN1", 5, 1);
-	PLOTUtility(pipe, "DELTL2 vs PLEN2", "Eccentricity at TLI (2nd opportunity)", "DELTL2", 1, "PLEN2", 5, 2);
-	PLOTUtility(pipe, "DELTL1 vs PLTX1", "X Component of Target Vector (1st opportunity)", "DELTL1", 1, "PLTX1", 6, 1);
-	PLOTUtility(pipe, "DELTL2 vs PLTX2", "X Component of Target Vector (2nd opportunity)", "DELTL2", 1, "PLTX2", 6, 2);
-	PLOTUtility(pipe, "DELTL1 vs PLTY1", "Y Component of Target Vector (1st opportunity)", "DELTL1", 1, "PLTY1", 7, 1);
-	PLOTUtility(pipe, "DELTL2 vs PLTY2", "Y Component of Target Vector (2nd opportunity)", "DELTL2", 1, "PLTY2", 7, 2);
-	PLOTUtility(pipe, "DELTL1 vs PLTZ1", "Z Component of Target Vector (1st opportunity)", "DELTL1", 1, "PLTZ1", 8, 1);
-	PLOTUtility(pipe, "DELTL2 vs PLTZ2", "Z Component of Target Vector (2nd opportunity)", "DELTL2", 1, "PLTZ2", 8, 2);
+	PLOTUtility(pipe, "DELTL1 vs DECT1", "Target Declination (1st opportunity)", "Time since launch window opening in seconds", 1, "DECT1", 1, 1);
+	PLOTUtility(pipe, "DELTL2 vs DECT2", "Target Declination (2nd opportunity)", "Time since launch window opening in seconds", 1, "DECT2", 1, 2);
+	PLOTUtility(pipe, "DELTL1 vs RAST1", "Target Right Ascension (1st opportunity)", "Time since launch window opening in seconds", 1, "RAST1", 2, 1);
+	PLOTUtility(pipe, "DELTL2 vs RAST2", "Target Right Ascension (2nd opportunity)", "Time since launch window opening in seconds", 1, "RAST2", 2, 2);
+	PLOTUtility(pipe, "DELTL1 vs COSG1", "Cosine of Perigee Angle (1st opportunity)", "Time since launch window opening in seconds", 1, "COSG1", 3, 1);
+	PLOTUtility(pipe, "DELTL2 vs COSG2", "Cosine of Perigee Angle (2nd opportunity)", "Time since launch window opening in seconds", 1, "COSG2", 3, 2);
+	PLOTUtility(pipe, "DELTL1 vs C3KM1", "Twice Specific Energy (1st opportunity)", "Time since launch window opening in seconds", 1, "C3KM1", 4, 1);
+	PLOTUtility(pipe, "DELTL2 vs C3KM2", "Twice Specific Energy (2nd opportunity)", "Time since launch window opening in seconds", 1, "C3KM2", 4, 2);
+	PLOTUtility(pipe, "DELTL1 vs PLEN1", "Eccentricity at TLI (1st opportunity)", "Time since launch window opening in seconds", 1, "PLEN1", 5, 1);
+	PLOTUtility(pipe, "DELTL2 vs PLEN2", "Eccentricity at TLI (2nd opportunity)", "Time since launch window opening in seconds", 1, "PLEN2", 5, 2);
+	PLOTUtility(pipe, "DELTL1 vs PLTX1", "X Component of Target Vector (1st opportunity)", "Time since launch window opening in seconds", 1, "PLTX1", 6, 1);
+	PLOTUtility(pipe, "DELTL2 vs PLTX2", "X Component of Target Vector (2nd opportunity)", "Time since launch window opening in seconds", 1, "PLTX2", 6, 2);
+	PLOTUtility(pipe, "DELTL1 vs PLTY1", "Y Component of Target Vector (1st opportunity)", "Time since launch window opening in seconds", 1, "PLTY1", 7, 1);
+	PLOTUtility(pipe, "DELTL2 vs PLTY2", "Y Component of Target Vector (2nd opportunity)", "Time since launch window opening in seconds", 1, "PLTY2", 7, 2);
+	PLOTUtility(pipe, "DELTL1 vs PLTZ1", "Z Component of Target Vector (1st opportunity)", "Time since launch window opening in seconds", 1, "PLTZ1", 8, 1);
+	PLOTUtility(pipe, "DELTL2 vs PLTZ2", "Z Component of Target Vector (2nd opportunity)", "Time since launch window opening in seconds", 1, "PLTZ2", 8, 2);
+	PLOTUtility(pipe, "DELTL1 vs PLCH1", "Plane change during TLI (1st opportunity)", "Time since launch window opening in seconds", 1, "Plane change in degrees", 9, 1);
+	PLOTUtility(pipe, "DELTL2 vs PLCH2", "Plane change during TLI (2nd opportunity)", "Time since launch window opening in seconds", 1, "Plane change in degrees", 9, 2);
+	PLOTUtility(pipe, "DELTL1 vs DVTLI1", "TLI Delta V (1st opportunity)", "Time since launch window opening in seconds", 1, "Delta V in feet per second", 10, 1);
+	PLOTUtility(pipe, "DELTL2 vs DVTLI2", "TLI Delta V (2nd opportunity)", "Time since launch window opening in seconds", 1, "Delta V in feet per second", 10, 2);
 
-	PLOTUtility(pipe, "WELTL1 vs DECT1", "Target Declination (1st opportunity)", "WELTL1", 2, "DECT1", 1, 1);
-	PLOTUtility(pipe, "WELTL2 vs DECT2", "Target Declination (2nd opportunity)", "WELTL2", 2, "DECT2", 1, 2);
-	PLOTUtility(pipe, "WELTL1 vs RAST1", "Target Right Ascension (1st opportunity)", "WELTL1", 2, "RAST1", 2, 1);
-	PLOTUtility(pipe, "WELTL2 vs RAST2", "Target Right Ascension (2nd opportunity)", "WELTL2", 2, "RAST2", 2, 2);
-	PLOTUtility(pipe, "WELTL1 vs COSG1", "Cosine of Perigee Angle (1st opportunity)", "WELTL1", 2, "COSG1", 3, 1);
-	PLOTUtility(pipe, "WELTL2 vs COSG2", "Cosine of Perigee Angle (2nd opportunity)", "WELTL2", 2, "COSG2", 3, 2);
-	PLOTUtility(pipe, "WELTL1 vs C3KM1", "Twice Specific Energy (1st opportunity)", "WELTL1", 2, "C3KM1", 4, 1);
-	PLOTUtility(pipe, "WELTL2 vs C3KM2", "Twice Specific Energy (2nd opportunity)", "WELTL2", 2, "C3KM2", 4, 2);
-	PLOTUtility(pipe, "WELTL1 vs PLEN1", "Eccentricity at TLI (1st opportunity)", "WELTL1", 2, "PLEN1", 5, 1);
-	PLOTUtility(pipe, "WELTL2 vs PLEN2", "Eccentricity at TLI (2nd opportunity)", "WELTL2", 2, "PLEN2", 5, 2);
-	PLOTUtility(pipe, "WELTL1 vs PLTX1", "X Component of Target Vector (1st opportunity)", "WELTL1", 2, "PLTX1", 6, 1);
-	PLOTUtility(pipe, "WELTL2 vs PLTX2", "X Component of Target Vector (2nd opportunity)", "WELTL2", 2, "PLTX2", 6, 2);
-	PLOTUtility(pipe, "WELTL1 vs PLTY1", "Y Component of Target Vector (1st opportunity)", "WELTL1", 2, "PLTY1", 7, 1);
-	PLOTUtility(pipe, "WELTL2 vs PLTY2", "Y Component of Target Vector (2nd opportunity)", "WELTL2", 2, "PLTY2", 7, 2);
-	PLOTUtility(pipe, "WELTL1 vs PLTZ1", "Z Component of Target Vector (1st opportunity)", "WELTL1", 2, "PLTZ1", 8, 1);
-	PLOTUtility(pipe, "WELTL2 vs PLTZ2", "Z Component of Target Vector (2nd opportunity)", "WELTL2", 2, "PLTZ2", 8, 2);
+	PLOTUtility(pipe, "WELTL1 vs DECT1", "Target Declination (1st opportunity)", "Launch azimuth in degrees", 2, "DECT1", 1, 1);
+	PLOTUtility(pipe, "WELTL2 vs DECT2", "Target Declination (2nd opportunity)", "Launch azimuth in degrees", 2, "DECT2", 1, 2);
+	PLOTUtility(pipe, "WELTL1 vs RAST1", "Target Right Ascension (1st opportunity)", "Launch azimuth in degrees", 2, "RAST1", 2, 1);
+	PLOTUtility(pipe, "WELTL2 vs RAST2", "Target Right Ascension (2nd opportunity)", "Launch azimuth in degrees", 2, "RAST2", 2, 2);
+	PLOTUtility(pipe, "WELTL1 vs COSG1", "Cosine of Perigee Angle (1st opportunity)", "Launch azimuth in degrees", 2, "COSG1", 3, 1);
+	PLOTUtility(pipe, "WELTL2 vs COSG2", "Cosine of Perigee Angle (2nd opportunity)", "Launch azimuth in degrees", 2, "COSG2", 3, 2);
+	PLOTUtility(pipe, "WELTL1 vs C3KM1", "Twice Specific Energy (1st opportunity)", "Launch azimuth in degrees", 2, "C3KM1", 4, 1);
+	PLOTUtility(pipe, "WELTL2 vs C3KM2", "Twice Specific Energy (2nd opportunity)", "Launch azimuth in degrees", 2, "C3KM2", 4, 2);
+	PLOTUtility(pipe, "WELTL1 vs PLEN1", "Eccentricity at TLI (1st opportunity)", "Launch azimuth in degrees", 2, "PLEN1", 5, 1);
+	PLOTUtility(pipe, "WELTL2 vs PLEN2", "Eccentricity at TLI (2nd opportunity)", "Launch azimuth in degrees", 2, "PLEN2", 5, 2);
+	PLOTUtility(pipe, "WELTL1 vs PLTX1", "X Component of Target Vector (1st opportunity)", "Launch azimuth in degrees", 2, "PLTX1", 6, 1);
+	PLOTUtility(pipe, "WELTL2 vs PLTX2", "X Component of Target Vector (2nd opportunity)", "Launch azimuth in degrees", 2, "PLTX2", 6, 2);
+	PLOTUtility(pipe, "WELTL1 vs PLTY1", "Y Component of Target Vector (1st opportunity)", "Launch azimuth in degrees", 2, "PLTY1", 7, 1);
+	PLOTUtility(pipe, "WELTL2 vs PLTY2", "Y Component of Target Vector (2nd opportunity)", "Launch azimuth in degrees", 2, "PLTY2", 7, 2);
+	PLOTUtility(pipe, "WELTL1 vs PLTZ1", "Z Component of Target Vector (1st opportunity)", "Launch azimuth in degrees", 2, "PLTZ1", 8, 1);
+	PLOTUtility(pipe, "WELTL2 vs PLTZ2", "Z Component of Target Vector (2nd opportunity)", "Launch azimuth in degrees", 2, "PLTZ2", 8, 2);
+	PLOTUtility(pipe, "WELTL1 vs PLCH1", "Plane change during TLI (1st opportunity)", "Launch azimuth in degrees", 2, "Plane change in degrees", 9, 1);
+	PLOTUtility(pipe, "WELTL2 vs PLCH2", "Plane change during TLI (2nd opportunity)", "Launch azimuth in degrees", 2, "Plane change in degrees", 9, 2);
+	PLOTUtility(pipe, "WELTL1 vs DVTLI1", "TLI Delta V (1st opportunity)", "Launch azimuth in degrees", 2, "Delta V in feet per second", 10, 1);
+	PLOTUtility(pipe, "WELTL2 vs DVTLI2", "TLI Delta V (2nd opportunity)", "Launch azimuth in degrees", 2, "Delta V in feet per second", 10, 2);
 
 	//fprintf(pipe, "load QRTP_Plot_Script\n");
 
