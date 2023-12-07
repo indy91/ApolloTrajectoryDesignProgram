@@ -2403,7 +2403,7 @@ void ApolloTrajectoryDesignProgram::ConvertPresetTapeToRTCCPunchCards(Performanc
 			tempstr.assign(Buff);
 			columns[0] = OrbMech::FixedWidthString(tempstr, 17U);
 
-			snprintf(Buff, 17, "%.8E", tape.EN1[2 * i + 2]);
+			snprintf(Buff, 17, "%.8E", tape.EN2[2 * i + 2]);
 			tempstr.assign(Buff);
 			columns[1] = OrbMech::FixedWidthString(tempstr, 17U);
 
