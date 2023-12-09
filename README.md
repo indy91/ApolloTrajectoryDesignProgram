@@ -6,7 +6,7 @@ Optional: To get the various output plots by the LV targeting, install Gnuplot a
 
 Instructions:
 
-Perform planning with the ATDP, check the NonTargetingParameters.txt file for any default LVDC settings. These numbers are not used by the ATDP itself, they are just combined with the targeting presettings calculated by the ATDP into a text file that then contains the entire LVDC scenario section for a launch scenario. For variables descriptions check: https://nassp.space/index.php/Scenario_File_Options#LVDC_options
+Before planning with the ATDP, check the NonTargetingParameters.txt file for any default LVDC settings. These numbers are not used by the ATDP itself, they are just combined with the targeting presettings calculated by the ATDP into a text file that then contains the entire LVDC scenario section for a launch scenario. For variables descriptions check: https://nassp.space/index.php/Scenario_File_Options#LVDC_options
 
 Init page. On the init page a project can file be saved and loaded.
 
@@ -26,13 +26,13 @@ The mission planning process consists of planning not just one mission, but the 
 
 Here follow descriptions of each input:
 
--Year, Month, Day: Date on which the launch will occur.
--Azimuth: In degrees, should be a number between 72 and 108.
--Window. Pacific and Atlantic launch windows are possible.
--Opportunity: Only first and second TLI opportunities are supported, happening on the second and third orbit after launch, respectively.
--DT TLI to PC: In hours. Should no free return constraint be desired, this parameter needs to be adjusted to constrain the time from TLI cutoff to pericynthion.
--Free Return: For enforcing a free return constraint on the translunar trajectory.
--Landing Site Latitude, Longitude, Elevation: Select the desired lunar landing site coordinates.
+-Year, Month, Day: Date on which the launch will occur. 
+-Azimuth: In degrees, should be a number between 72 and 108. 
+-Window. Pacific and Atlantic launch windows are possible.  
+-Opportunity: Only first and second TLI opportunities are supported, happening on the second and third orbit after launch, respectively.  
+-DT TLI to PC: In hours. Should no free return constraint be desired, this parameter needs to be adjusted to constrain the time from TLI cutoff to pericynthion.  
+-Free Return: For enforcing a free return constraint on the translunar trajectory.  
+-Landing Site Latitude, Longitude, Elevation: Select the desired lunar landing site coordinates.  
 -Approach azimuth: This is the direction from which the landing site is being approached. A typical value is -90°, a normal range of values can be -70° to -110°. This value is the primary way to optimize the DV remaining after TEI. When every other input parameter is as desired, this number needs to be manually tweaked for optimization.
 -Lunar Orbit Geometry: Here select the number of orbits between each event in lunar orbit. The events are LOI-1 (orbit insertion into a 60 x 170 NM altitude orbit). LOI-2, circularization to 60 NM altitude. LOI-2 to LLS, number of full orbits from LOI-2 to the lunar landing. The internal logic will account for the remaining angle necessary to reach the landing site. LLS to LOPC, number of full orbits between the lunar landing the lunar orbit plane change burn, which is done by the CSM to fly over the site for a second time, for lunar ascent by the LM. LOPC to LLS2, number of full orbits between the LOPC burn and lunar ascent. LLS2 to TEI, number of full orbits from lunar ascent to TEI.
 -Splashdown maximum inclination: For TEI the return (Earth relative) inclination was contrained to 40° for the early Apollo missions. Later it got relaxed to 75°. This contraint is not enforce for the Pericynthion plus 2 DPS abort burn simulation.
