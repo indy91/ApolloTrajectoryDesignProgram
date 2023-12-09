@@ -1666,6 +1666,7 @@ void QuickResponseTargetingProgram::WritePresettings(int AltitudeOption, const M
 	//Altitude: 1 = 90 NM, 2 = 100 NM
 
 	std::ofstream myfile;
+	std::ifstream nontargfile;
 	unsigned i;
 	char Buff[128];
 
@@ -1852,6 +1853,20 @@ void QuickResponseTargetingProgram::WritePresettings(int AltitudeOption, const M
 	myfile << Buff << std::endl;
 	sprintf_s(Buff, 128, "LVDC_t_SD3 %e", tape.TSD3);
 	myfile << Buff << std::endl;
+
+	nontargfile.open("NonTargetingPresettings.txt");
+
+	if (nontargfile.is_open())
+	{
+		std::string line;
+
+		while (std::getline(nontargfile, line))
+		{
+			myfile << line << std::endl;
+		}
+
+		nontargfile.close();
+	}
 
 	myfile.close();
 }
