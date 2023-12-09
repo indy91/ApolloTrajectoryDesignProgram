@@ -33,8 +33,10 @@ QuickResponseTargetingProgram::QuickResponseTargetingProgram()
 	lambda_L = -80.604133 * RAD;
 }
 
-void QuickResponseTargetingProgram::RunTargetingOption(std::string project, PerformanceData perf, int day, bool freereturn, int splittime, int AltitudeOption, MSFCPresetTape& presets)
+bool QuickResponseTargetingProgram::RunTargetingOption(std::string project, PerformanceData perf, int day, bool freereturn, int splittime, int AltitudeOption, MSFCPresetTape& presets)
 {
+	DebugMessages.clear();
+
 	unsigned i;
 
 	//Get all cases for this launch day, sorted in pairs of TLI opportunity
@@ -52,14 +54,16 @@ void QuickResponseTargetingProgram::RunTargetingOption(std::string project, Perf
 	if (objectives_day.size() <= 1)
 	{
 		//Error
-		return;
+		DebugMessages.push_back("Error loading LV targeting objectives");
+		return true;
 	}
 
 	//Setup with numbers from first case
 	if (SetupBasics(objectives_day[0].set[0].Year, objectives_day[0].set[0].Month, objectives_day[0].set[0].Day))
 	{
 		//Error
-		return;
+		DebugMessages.push_back("Launch day not supported");
+		return true;
 	}
 
 	EnckeIntegratorInputTable enckein;
@@ -106,6 +110,7 @@ void QuickResponseTargetingProgram::RunTargetingOption(std::string project, Perf
 		if (CoplanarSearch())
 		{
 			//Error
+			DebugMessages.push_back("Coplanar search failed");
 			continue;
 		}
 
@@ -148,6 +153,7 @@ void QuickResponseTargetingProgram::RunTargetingOption(std::string project, Perf
 			if (CoplanarSearch())
 			{
 				//Error
+				DebugMessages.push_back("Coplanar search failed");
 				continue;
 			}
 
@@ -164,6 +170,7 @@ void QuickResponseTargetingProgram::RunTargetingOption(std::string project, Perf
 			if (PlaneChangeSearch())
 			{
 				//Error
+				DebugMessages.push_back("Plane search failed");
 				continue;
 			}
 			/*if (HypersurfaceSearch())
@@ -182,6 +189,7 @@ void QuickResponseTargetingProgram::RunTargetingOption(std::string project, Perf
 			if (PlaneChangeSearch())
 			{
 				//Error
+				DebugMessages.push_back("Plane search failed");
 				continue;
 			}
 			/*if (HypersurfaceSearch())
@@ -200,6 +208,7 @@ void QuickResponseTargetingProgram::RunTargetingOption(std::string project, Perf
 			if (PlaneChangeSearch())
 			{
 				//Error
+				DebugMessages.push_back("Plane search failed");
 				continue;
 			}
 			/*if (HypersurfaceSearch())
@@ -216,6 +225,7 @@ void QuickResponseTargetingProgram::RunTargetingOption(std::string project, Perf
 			if (PlaneChangeSearch())
 			{
 				//Error
+				DebugMessages.push_back("Plane search failed");
 				continue;
 			}
 			/*if (HypersurfaceSearch())
@@ -242,7 +252,8 @@ void QuickResponseTargetingProgram::RunTargetingOption(std::string project, Perf
 	if (OUTPUT.num == 0)
 	{
 		//Error
-		return;
+		DebugMessages.push_back("No cases converged");
+		return true;
 	}
 
 	//Store presettings for LVDC and RTCC
@@ -334,6 +345,9 @@ void QuickResponseTargetingProgram::RunTargetingOption(std::string project, Perf
 
 	//Write plots
 	PLOT();
+
+	DebugMessages.push_back("Search converged");
+	return false;
 }
 
 void QuickResponseTargetingProgram::RunTLMCOption()
@@ -1207,6 +1221,9 @@ void QuickResponseTargetingProgram::PLOTUtility(FILE* file, std::string filename
 		case 11:
 			ydata[i] = OUTPUT.data[opp - 1][i].DT_EOI_TB6 / HRS;
 			break;
+		case 12:
+			ydata[i] = OUTPUT.data[opp - 1][i].GMT_PC / HRS;
+			break;
 		default:
 			ydata[i] = 0.0;
 			break;
@@ -1311,6 +1328,9 @@ void QuickResponseTargetingProgram::PLOT()
 
 	PLOTUtility(pipe, "WELTL1 vs TB6GET1", "Time of TB6 (1st opportunity)", "Launch azimuth in degrees", 2, "TB5 time of restart prep in hours", 11, 1);
 	PLOTUtility(pipe, "WELTL2 vs TB6GET2", "Time of TB6 (2nd opportunity)", "Launch azimuth in degrees", 2, "TB5 time of restart prep in hours", 11, 2);
+
+	PLOTUtility(pipe, "WELTL1 vs GMTPC1", "GMT of pericynthion (1st opportunity)", "Launch azimuth in degrees", 2, "GMT of pericynthion in hours", 12, 1);
+	PLOTUtility(pipe, "WELTL2 vs GMTPC2", "GMT of pericynthion (2nd opportunity)", "Launch azimuth in degrees", 2, "GMT of pericynthion in hours", 12, 2);
 
 	//fprintf(pipe, "load QRTP_Plot_Script\n");
 

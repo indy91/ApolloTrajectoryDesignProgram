@@ -207,6 +207,14 @@ namespace CppCLRWinFormsProject {
 
 		this->richTextBox2->Text = "SFP saved under " + this->textBox42->Text + "-SFP.txt" + "\r\n";
 		this->richTextBox2->Text += "LV targeting objectives saved under " + this->textBox42->Text + "-LVTargetingObjectives.txt" + "\r\n";
+
+		int Year = Int32::Parse(this->textBox18->Text);
+		int Month = Int32::Parse(this->textBox17->Text);
+		int Day = Int32::Parse(this->textBox16->Text);
+
+		atdp->ExportRTCCInitFile(Year, Month, Day);
+
+		this->richTextBox2->Text += "RTCC init file saved under " + Year.ToString("D4") + "-" + Month.ToString("D2") + "-" + Day.ToString("D2") + " Init.txt" + "\r\n";
 	}
 
 	void Form1::UpdateDisplayedLVTargeting()
@@ -314,7 +322,16 @@ namespace CppCLRWinFormsProject {
 		int SplitTimeOption = this->comboBox3->SelectedIndex + 1;
 		int AltitudeOption = this->comboBox4->SelectedIndex + 1;
 
-		qrtp->RunTargetingOption(project, perf, Day, IsFreeReturn, SplitTimeOption, AltitudeOption, presets);
+		bool err = qrtp->RunTargetingOption(project, perf, Day, IsFreeReturn, SplitTimeOption, AltitudeOption, presets);
+
+		this->richTextBox5->Text = "";
+
+		for (unsigned i = 0; i < qrtp->DebugMessages.size(); i++)
+		{
+			this->richTextBox5->Text += msclr::interop::marshal_as<String^>(qrtp->DebugMessages[i]) + "\r\n";
+		}
+
+		if (err) return;
 
 		//Preload preset tape name
 		char Buffer[128];
@@ -329,13 +346,10 @@ namespace CppCLRWinFormsProject {
 		int hh, mm;
 		OrbMech::SStoHHMMSS(presets.TLO, hh, mm, ss);
 
-		this->richTextBox5->Text = "";
-		this->richTextBox5->Text += "Launch window opening: " + hh.ToString("D2") + ":" + mm.ToString("D2") + ":" + ss.ToString("F0") + "\r\n";
+		this->richTextBox5->Text += "Launch window opening: " + hh.ToString("D2") + ":" + mm.ToString("D2") + ":" + ((int)ss).ToString("D2") + "\r\n";
 		this->richTextBox5->Text += "Launch azimuth: " + presets.AZ[0].ToString("F3") + " deg" + "\r\n";
 		this->richTextBox5->Text += "LVDC presettings saved under " + tempstr + "\r\n";
 		this->richTextBox5->Text += "Preset tape saved under " + this->textBox44->Text + "\r\n";
-
-		
 	}
 
 	PerformanceData Form1::ReadPerformanceData()
@@ -375,7 +389,7 @@ namespace CppCLRWinFormsProject {
 		String^ tempstr = gcnew String(Buffer);
 
 		this->richTextBox6->Text = "";
-		this->richTextBox6->Text += "Preferred launch time: " + hh.ToString("D2") + ":" + mm.ToString("D2") + ":" + ss.ToString("F0") + "\r\n";
+		this->richTextBox6->Text += "Preferred launch time: " + hh.ToString("D2") + ":" + mm.ToString("D2") + ":" + ((int)ss).ToString("D2") + "\r\n";
 		this->richTextBox6->Text += "Launch azimuth: " + data[1].ToString("F3") + " deg" + "\r\n";
 		this->richTextBox6->Text += "MJD at T-4h: " + data[2].ToString("F9") + "\r\n";
 		this->richTextBox6->Text += "RTCC TLI File saved under " + tempstr + "\r\n";

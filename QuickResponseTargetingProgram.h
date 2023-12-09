@@ -109,13 +109,15 @@ public:
 
 	void LoadLVTargetingObjectives(std::string filename);
 	void GetPreprocessorPlotData(int type, std::vector<double> &xdata1, std::vector<double> &ydata1, std::vector<double>& xdata2, std::vector<double>& ydata2) const;
-	void RunTargetingOption(std::string project, PerformanceData perf, int day, bool freereturn, int splittime, int AltitudeOption, MSFCPresetTape &presets);
+	bool RunTargetingOption(std::string project, PerformanceData perf, int day, bool freereturn, int splittime, int AltitudeOption, MSFCPresetTape &presets);
 	void RunTLMCOption();
 
 	bool TLITrajectoryProcessor(std::vector<double>& var, void* varPtr, std::vector<double>& arr, bool mode);
 	bool TLMCTrajectoryProcessor(std::vector<double>& var, void* varPtr, std::vector<double>& arr, bool mode);
 
 	std::vector<LVTargetingObjectivesSet> objectives;
+
+	std::vector<std::string> DebugMessages;
 protected:
 
 	bool SetupBasics(int Year, int Month, int Day);
@@ -148,6 +150,7 @@ protected:
 	const double DT_TB6_TIG = 580.5 / HRS;
 	const double ER2HR2ToKM2SEC2 = pow(OrbMech::R_Earth / 3600000.0, 2);
 
+	//Launchpad longitude
 	double lambda_L;
 
 	//Translunar ellipse normal vector from free-return search

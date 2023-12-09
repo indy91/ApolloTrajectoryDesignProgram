@@ -1849,6 +1849,32 @@ void ApolloTrajectoryDesignProgram::DeleteStoredData()
 	if (LVTargetingDataTable.size() > 0) LVTargetingDataTable.pop_back();
 }
 
+void ApolloTrajectoryDesignProgram::ExportRTCCInitFile(int Year, int Month, int Day) const
+{
+	//Take data from first SFP set, if it exists
+	if (SFPDataSets.size() == 0) return;
+	if (LVTargetingDataTable.size() == 0) return;
+
+	char Buff[128];
+	std::ofstream myfile;
+
+	snprintf(Buff, 128, "./Projects/%04d-%02d-%02d Init.txt", Year, Month, Day);
+	myfile.open(Buff);
+
+	if (myfile.is_open() == false) return;
+
+	snprintf(Buff, 128, "LSLat %.3lf", SFPDataSets[0].lat_LLS * DEG);
+	myfile << Buff << std::endl;
+	snprintf(Buff, 128, "LSLng %.3lf", SFPDataSets[0].lng_LLS * DEG);
+	myfile << Buff << std::endl;
+	snprintf(Buff, 128, "LSRad %.3lf", SFPDataSets[0].R_LLS * OrbMech::ER2NM);
+	myfile << Buff << std::endl;
+	snprintf(Buff, 128, "TLAND %.3lf", SFPDataSets[0].GMT_ND + SFPDataSets[0].DT_LLS - LVTargetingDataTable[0].LTS);
+	myfile << Buff << std::endl;
+
+	myfile.close();
+}
+
 void ApolloTrajectoryDesignProgram::ExportSFPDataSets(std::string project) const
 {
 	char Buff[128];
