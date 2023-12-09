@@ -1674,6 +1674,22 @@ void QuickResponseTargetingProgram::WritePresettings(int AltitudeOption, const M
 
 	if (myfile.is_open() == false) return;
 
+	//Write non-targeting presettings
+	nontargfile.open("NonTargetingPresettings.txt");
+
+	if (nontargfile.is_open())
+	{
+		std::string line;
+
+		while (std::getline(nontargfile, line))
+		{
+			myfile << line << std::endl;
+		}
+
+		nontargfile.close();
+	}
+
+	//Write Earth orbit insertion parameters
 	if (AltitudeOption == 1)
 	{
 		myfile << "LVDC_R_T 6544846.0" << std::endl;
@@ -1685,6 +1701,7 @@ void QuickResponseTargetingProgram::WritePresettings(int AltitudeOption, const M
 		myfile << "LVDC_V_T 7793.0429" << std::endl;
 	}
 
+	//Write the data from the presettings
 	sprintf_s(Buff, 128, "LVDC_T_LO %e", tape.TLO - DT_GRR * HRS);
 	myfile << Buff << std::endl;
 
@@ -1853,20 +1870,6 @@ void QuickResponseTargetingProgram::WritePresettings(int AltitudeOption, const M
 	myfile << Buff << std::endl;
 	sprintf_s(Buff, 128, "LVDC_t_SD3 %e", tape.TSD3);
 	myfile << Buff << std::endl;
-
-	nontargfile.open("NonTargetingPresettings.txt");
-
-	if (nontargfile.is_open())
-	{
-		std::string line;
-
-		while (std::getline(nontargfile, line))
-		{
-			myfile << line << std::endl;
-		}
-
-		nontargfile.close();
-	}
 
 	myfile.close();
 }

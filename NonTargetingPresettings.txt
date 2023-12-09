@@ -1,3 +1,4 @@
+LVDC_FSPFileName Config\ProjectApollo\J-Mission Flight Sequence Program.txt
 LVDC_SIICenterEngineCutoff 1
 LVDC_BN4 150.9
 LVDC_T7M9 150.9
