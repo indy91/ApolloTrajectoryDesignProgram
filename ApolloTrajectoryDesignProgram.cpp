@@ -1871,6 +1871,8 @@ void ApolloTrajectoryDesignProgram::ExportRTCCInitFile(int Year, int Month, int 
 	myfile << Buff << std::endl;
 	snprintf(Buff, 128, "TLAND %.3lf", SFPDataSets[0].GMT_ND + SFPDataSets[0].DT_LLS - LVTargetingDataTable[0].LTS);
 	myfile << Buff << std::endl;
+	snprintf(Buff, 128, "LOI_psi_DS %.3lf", SFPDataSets[0].ApproachAzimuth * DEG + 360.0);
+	myfile << Buff << std::endl;
 
 	myfile.close();
 }
