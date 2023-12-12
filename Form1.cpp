@@ -399,7 +399,7 @@ namespace CppCLRWinFormsProject {
 	{
 		std::string project = msclr::interop::marshal_as<std::string>(this->textBox42->Text);
 		std::string projectfile = "Saves/" + project + "-Project.sav";
-		std::ofstream myfile(projectfile.c_str(), std::ios::out | std::ios::binary);
+		std::ofstream myfile(projectfile.c_str(), std::ios::binary);
 
 		if (myfile.is_open() == false) return;
 
@@ -478,7 +478,7 @@ namespace CppCLRWinFormsProject {
 	{
 		std::string project = msclr::interop::marshal_as<std::string>(this->textBox42->Text);
 		std::string projectfile = "Saves/" + project + "-Project.sav";
-		std::ifstream myfile(projectfile.c_str());
+		std::ifstream myfile(projectfile.c_str(), std::ifstream::binary);
 
 		if (myfile.is_open() == false) return;
 

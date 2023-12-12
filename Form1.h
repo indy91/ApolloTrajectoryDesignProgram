@@ -274,12 +274,12 @@ private: System::Windows::Forms::DataVisualization::Charting::Chart^ chart2;
 		/// </summary>
 		void InitializeComponent(void)
 		{
-			System::Windows::Forms::DataVisualization::Charting::ChartArea^ chartArea2 = (gcnew System::Windows::Forms::DataVisualization::Charting::ChartArea());
-			System::Windows::Forms::DataVisualization::Charting::Legend^ legend2 = (gcnew System::Windows::Forms::DataVisualization::Charting::Legend());
-			System::Windows::Forms::DataVisualization::Charting::Series^ series2 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
 			System::Windows::Forms::DataVisualization::Charting::ChartArea^ chartArea1 = (gcnew System::Windows::Forms::DataVisualization::Charting::ChartArea());
 			System::Windows::Forms::DataVisualization::Charting::Legend^ legend1 = (gcnew System::Windows::Forms::DataVisualization::Charting::Legend());
 			System::Windows::Forms::DataVisualization::Charting::Series^ series1 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
+			System::Windows::Forms::DataVisualization::Charting::ChartArea^ chartArea2 = (gcnew System::Windows::Forms::DataVisualization::Charting::ChartArea());
+			System::Windows::Forms::DataVisualization::Charting::Legend^ legend2 = (gcnew System::Windows::Forms::DataVisualization::Charting::Legend());
+			System::Windows::Forms::DataVisualization::Charting::Series^ series2 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
 			this->tabControl1 = (gcnew System::Windows::Forms::TabControl());
 			this->tabPage6 = (gcnew System::Windows::Forms::TabPage());
 			this->label72 = (gcnew System::Windows::Forms::Label());
@@ -419,6 +419,7 @@ private: System::Windows::Forms::DataVisualization::Charting::Chart^ chart2;
 			this->label23 = (gcnew System::Windows::Forms::Label());
 			this->label24 = (gcnew System::Windows::Forms::Label());
 			this->tabPage4 = (gcnew System::Windows::Forms::TabPage());
+			this->chart2 = (gcnew System::Windows::Forms::DataVisualization::Charting::Chart());
 			this->button7 = (gcnew System::Windows::Forms::Button());
 			this->label46 = (gcnew System::Windows::Forms::Label());
 			this->textBox32 = (gcnew System::Windows::Forms::TextBox());
@@ -439,7 +440,6 @@ private: System::Windows::Forms::DataVisualization::Charting::Chart^ chart2;
 			this->textBox44 = (gcnew System::Windows::Forms::TextBox());
 			this->label73 = (gcnew System::Windows::Forms::Label());
 			this->richTextBox6 = (gcnew System::Windows::Forms::RichTextBox());
-			this->chart2 = (gcnew System::Windows::Forms::DataVisualization::Charting::Chart());
 			this->tabControl1->SuspendLayout();
 			this->tabPage6->SuspendLayout();
 			this->groupBox1->SuspendLayout();
@@ -449,10 +449,10 @@ private: System::Windows::Forms::DataVisualization::Charting::Chart^ chart2;
 			this->tabPage3->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numericUpDown2))->BeginInit();
 			this->tabPage4->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->chart2))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->chart1))->BeginInit();
 			this->tabPage5->SuspendLayout();
 			this->tabPage7->SuspendLayout();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->chart2))->BeginInit();
 			this->SuspendLayout();
 			// 
 			// tabControl1
@@ -1823,6 +1823,23 @@ private: System::Windows::Forms::DataVisualization::Charting::Chart^ chart2;
 			this->tabPage4->TabIndex = 3;
 			this->tabPage4->Text = L"LV Preprocessor";
 			// 
+			// chart2
+			// 
+			chartArea1->Name = L"ChartArea1";
+			this->chart2->ChartAreas->Add(chartArea1);
+			legend1->Name = L"Legend1";
+			this->chart2->Legends->Add(legend1);
+			this->chart2->Location = System::Drawing::Point(669, 50);
+			this->chart2->Name = L"chart2";
+			series1->ChartArea = L"ChartArea1";
+			series1->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Point;
+			series1->Legend = L"Legend1";
+			series1->Name = L"Launch Azimuth";
+			this->chart2->Series->Add(series1);
+			this->chart2->Size = System::Drawing::Size(452, 274);
+			this->chart2->TabIndex = 4;
+			this->chart2->Text = L"chart2";
+			// 
 			// button7
 			// 
 			this->button7->Location = System::Drawing::Point(398, 31);
@@ -2005,6 +2022,7 @@ private: System::Windows::Forms::DataVisualization::Charting::Chart^ chart2;
 			this->textBox44->Name = L"textBox44";
 			this->textBox44->Size = System::Drawing::Size(202, 20);
 			this->textBox44->TabIndex = 2;
+			this->textBox44->Text = L"Default-Preset-Tape-1969-07-16.txt";
 			// 
 			// label73
 			// 
@@ -2022,23 +2040,6 @@ private: System::Windows::Forms::DataVisualization::Charting::Chart^ chart2;
 			this->richTextBox6->Size = System::Drawing::Size(333, 232);
 			this->richTextBox6->TabIndex = 0;
 			this->richTextBox6->Text = L"";
-			// 
-			// chart2
-			// 
-			chartArea1->Name = L"ChartArea1";
-			this->chart2->ChartAreas->Add(chartArea1);
-			legend1->Name = L"Legend1";
-			this->chart2->Legends->Add(legend1);
-			this->chart2->Location = System::Drawing::Point(669, 50);
-			this->chart2->Name = L"chart2";
-			series1->ChartArea = L"ChartArea1";
-			series1->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Point;
-			series1->Legend = L"Legend1";
-			series1->Name = L"Launch Azimuth";
-			this->chart2->Series->Add(series1);
-			this->chart2->Size = System::Drawing::Size(452, 274);
-			this->chart2->TabIndex = 4;
-			this->chart2->Text = L"chart2";
 			// 
 			// Form1
 			// 
@@ -2063,12 +2064,12 @@ private: System::Windows::Forms::DataVisualization::Charting::Chart^ chart2;
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numericUpDown2))->EndInit();
 			this->tabPage4->ResumeLayout(false);
 			this->tabPage4->PerformLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->chart2))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->chart1))->EndInit();
 			this->tabPage5->ResumeLayout(false);
 			this->tabPage5->PerformLayout();
 			this->tabPage7->ResumeLayout(false);
 			this->tabPage7->PerformLayout();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->chart2))->EndInit();
 			this->ResumeLayout(false);
 
 		}
