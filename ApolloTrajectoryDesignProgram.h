@@ -253,7 +253,7 @@ public:
 
 	void ExportLVDataSet(std::string project) const;
 	void ExportSFPDataSets(std::string project) const;
-	void ExportRTCCInitFile(int Year, int Month, int Day) const;
+	void ExportRTCCInitFile(int Year, int Month, int Day, double revs1, int revs2, int m, int n) const;
 
 	void SaveData();
 	void DeleteStoredData();

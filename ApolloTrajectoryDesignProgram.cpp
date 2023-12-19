@@ -1709,6 +1709,15 @@ SFPDataSet ApolloTrajectoryDesignProgram::WriteSFPTable(double LaunchAzimuth, in
 	set.I_FR = 0.0; //TBD
 	set.GMT_PC1 = set.GMT_PC2 = set.GMT_ND = iter_arr.sv_PC.GMT;
 
+	//Additional data not technically on the SFP
+	set.lat_spl = iter_arr.lat_ip_pr;
+	set.lng_spl = iter_arr.lng_ip_pr;
+
+	if (set.lng_spl > PI)
+	{
+		set.lng_spl -= PI2;
+	}
+
 	return set;
 }
 
@@ -1849,7 +1858,7 @@ void ApolloTrajectoryDesignProgram::DeleteStoredData()
 	if (LVTargetingDataTable.size() > 0) LVTargetingDataTable.pop_back();
 }
 
-void ApolloTrajectoryDesignProgram::ExportRTCCInitFile(int Year, int Month, int Day) const
+void ApolloTrajectoryDesignProgram::ExportRTCCInitFile(int Year, int Month, int Day, double revs1, int revs2, int m, int n) const
 {
 	//Take data from first SFP set, if it exists
 	if (SFPDataSets.size() == 0) return;
@@ -1872,6 +1881,20 @@ void ApolloTrajectoryDesignProgram::ExportRTCCInitFile(int Year, int Month, int 
 	snprintf(Buff, 128, "TLAND %.3lf", SFPDataSets[0].GMT_ND + SFPDataSets[0].DT_LLS - LVTargetingDataTable[0].LTS);
 	myfile << Buff << std::endl;
 	snprintf(Buff, 128, "LOI_psi_DS %.3lf", SFPDataSets[0].ApproachAzimuth * DEG + 360.0);
+	myfile << Buff << std::endl;
+	snprintf(Buff, 128, "TLCC_AZ_min %.3lf", SFPDataSets[0].ApproachAzimuth * DEG);
+	myfile << Buff << std::endl;
+	snprintf(Buff, 128, "TLCC_AZ_max %.3lf", SFPDataSets[0].ApproachAzimuth * DEG);
+	myfile << Buff << std::endl;
+	snprintf(Buff, 128, "REVS1 %.2lf", revs1);
+	myfile << Buff << std::endl;
+	snprintf(Buff, 128, "REVS2 %d", revs2);
+	myfile << Buff << std::endl;
+	snprintf(Buff, 128, "LOPC_M %d", m);
+	myfile << Buff << std::endl;
+	snprintf(Buff, 128, "LOPC_N %d", n);
+	myfile << Buff << std::endl;
+	snprintf(Buff, 128, "PTPSite 0 EOM %.3lf %.3lf", SFPDataSets[0].lat_spl * DEG, SFPDataSets[0].lng_spl * DEG);
 	myfile << Buff << std::endl;
 
 	myfile.close();

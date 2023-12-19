@@ -82,6 +82,10 @@ struct SFPDataSet
 	double lat_ND;
 	double lng_ND;
 	double h_ND;
+
+	//Additional data to save
+	double lat_spl; //Splashdown latitude
+	double lng_spl; //Splashdown longitude
 };
 
 struct LVTargetingObjectives

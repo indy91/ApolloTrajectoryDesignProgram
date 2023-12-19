@@ -212,7 +212,12 @@ namespace CppCLRWinFormsProject {
 		int Month = Int32::Parse(this->textBox17->Text);
 		int Day = Int32::Parse(this->textBox16->Text);
 
-		atdp->ExportRTCCInitFile(Year, Month, Day);
+		double REVS1 = Double::Parse(this->textBox24->Text); //Orbits in first LPO
+		int REVS2 = Int32::Parse(this->textBox25->Text); //Orbits in second LPO
+		int REVS3 = Int32::Parse(this->textBox26->Text); //Orbits from landing to LOPC
+		int REVS4 = Int32::Parse(this->textBox27->Text); //Orbits from LOPC to lunar liftoff
+
+		atdp->ExportRTCCInitFile(Year, Month, Day, REVS1, REVS2, REVS3, REVS4);
 
 		this->richTextBox2->Text += "RTCC init file saved under " + Year.ToString("D4") + "-" + Month.ToString("D2") + "-" + Day.ToString("D2") + " Init.txt" + "\r\n";
 	}
