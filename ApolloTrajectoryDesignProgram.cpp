@@ -361,7 +361,8 @@ void ApolloTrajectoryDesignProgram::CalculateLaunchData(const PerformanceData& p
 
 	data[0] = ActualLaunchTime;
 	data[1] = A_Z;
-	data[2] = MJD + ActualLaunchTime / 24.0 / 3600.0 - 4.0 / 24.0;
+	data[3] = MJD + ActualLaunchTime / 24.0 / 3600.0;
+	data[2] = data[3] - 4.0 / 24.0;
 }
 
 bool ApolloTrajectoryDesignProgram::ConvergeInitialGuessTrajectory(bool FreeReturn)

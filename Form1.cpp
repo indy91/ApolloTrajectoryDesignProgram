@@ -381,7 +381,7 @@ namespace CppCLRWinFormsProject {
 		std::string preset = msclr::interop::marshal_as<std::string>(this->textBox44->Text);
 
 		MSFCPresetTape presettings;
-		double data[3];
+		double data[4];
 		char Buffer[128];
 
 		atdp->CalculateLaunchData(perf, project, preset, presettings, data);
@@ -397,6 +397,7 @@ namespace CppCLRWinFormsProject {
 		this->richTextBox6->Text += "Preferred launch time: " + hh.ToString("D2") + ":" + mm.ToString("D2") + ":" + ((int)ss).ToString("D2") + "\r\n";
 		this->richTextBox6->Text += "Launch azimuth: " + data[1].ToString("F3") + " deg" + "\r\n";
 		this->richTextBox6->Text += "MJD at T-4h: " + data[2].ToString("F9") + "\r\n";
+		this->richTextBox6->Text += "MJD at Liftoff: " + data[3].ToString("F9") + "\r\n";
 		this->richTextBox6->Text += "RTCC TLI File saved under " + tempstr + "\r\n";
 	}
 
