@@ -25,10 +25,31 @@ the Apollo Trajectory Design Program. If not, see <https://www.gnu.org/licenses/
 
 namespace CppCLRWinFormsProject {
 
+	double DoubleParse(System::String ^s)
+	{
+		System::Globalization::CultureInfo^ myCIintl = gcnew System::Globalization::CultureInfo("en-US", false);
+
+		return Double::Parse(s, myCIintl);
+	}
+
+	System::String^ DoubleToString(double val)
+	{
+		System::Globalization::CultureInfo^ myCIintl = gcnew System::Globalization::CultureInfo("en-US", false);
+
+		return val.ToString(myCIintl);
+	}
+
+	System::String^ DoubleToString(double val, System::String^ format)
+	{
+		System::Globalization::CultureInfo^ myCIintl = gcnew System::Globalization::CultureInfo("en-US", false);
+
+		return val.ToString(format, myCIintl);
+	}
+
 	void Form1::CalculateElevationAngle()
 	{
-		double lat = Double::Parse(this->textBox1->Text);
-		double lng = Double::Parse(this->textBox2->Text);
+		double lat = DoubleParse(this->textBox1->Text);
+		double lng = DoubleParse(this->textBox2->Text);
 		int Year = Int32::Parse(this->textBox3->Text);
 		int Month = Int32::Parse(this->textBox4->Text);
 		int Day = Int32::Parse(this->textBox5->Text);
@@ -38,7 +59,7 @@ namespace CppCLRWinFormsProject {
 
 		double Elev = traj.LunarSunElevationAngle(Year, Month, Day, Hour, lat, lng) * DEG;
 
-		this->textBox6->Text = Elev.ToString("F2");
+		this->textBox6->Text = DoubleToString(Elev, "F2");
 
 		//Copy inputs over to next tab
 		this->textBox10->Text = this->textBox3->Text;
@@ -56,10 +77,10 @@ namespace CppCLRWinFormsProject {
 		int Year = Int32::Parse(this->textBox10->Text);
 		int Month = Int32::Parse(this->textBox9->Text);
 		int Day = Int32::Parse(this->textBox8->Text);
-		double Azi = Double::Parse(this->textBox13->Text);
+		double Azi = DoubleParse(this->textBox13->Text);
 		int AlitudeOption = this->comboBox4->SelectedIndex + 1;
-		double lat = Double::Parse(this->textBox14->Text);
-		double lng = Double::Parse(this->textBox12->Text);
+		double lat = DoubleParse(this->textBox14->Text);
+		double lng = DoubleParse(this->textBox12->Text);
 		int LunarOrbits = Int32::Parse(this->textBox11->Text);
 		int Window = this->comboBox1->SelectedIndex + 1;
 		int Opportunity = System::Decimal::ToInt32(this->numericUpDown1->Value);
@@ -68,11 +89,11 @@ namespace CppCLRWinFormsProject {
 
 		FirstGuessLogicDisplay disp = traj.CalculateFirstGuessLogic(Year, Month, Day, Azi, AlitudeOption, Window, Opportunity, LunarOrbits, lat, lng);
 
-		this->richTextBox1->Text = "Launch: " + disp.Launchtime.ToString("F5") + "h GMT" + "\r\n";
-		this->richTextBox1->Text += "TLI: " + disp.TLItime.ToString("F5") + "h GET" + "\r\n";
-		this->richTextBox1->Text += "PC: " + disp.PCtime.ToString("F5") + "h GET" + "\r\n";
-		this->richTextBox1->Text += "Landing: " + disp.LandingTime.ToString("F5") + "h GET" + "\r\n";
-		this->richTextBox1->Text += "Sun Elevation: " + disp.LandingSunElevation.ToString("F5") + " deg";
+		this->richTextBox1->Text = "Launch: " + DoubleToString(disp.Launchtime, "F5") + "h GMT" + "\r\n";
+		this->richTextBox1->Text += "TLI: " + DoubleToString(disp.TLItime, "F5") + "h GET" + "\r\n";
+		this->richTextBox1->Text += "PC: " + DoubleToString(disp.PCtime, "F5") + "h GET" + "\r\n";
+		this->richTextBox1->Text += "Landing: " + DoubleToString(disp.LandingTime, "F5") + "h GET" + "\r\n";
+		this->richTextBox1->Text += "Sun Elevation: " + DoubleToString(disp.LandingSunElevation, "F5") + " deg";
 
 		//Copy inputs over
 		this->textBox18->Text = this->textBox10->Text;
@@ -91,7 +112,7 @@ namespace CppCLRWinFormsProject {
 		int Year = Int32::Parse(this->textBox18->Text);
 		int Month = Int32::Parse(this->textBox17->Text);
 		int Day = Int32::Parse(this->textBox16->Text);
-		double Azi = Double::Parse(this->textBox15->Text);
+		double Azi = DoubleParse(this->textBox15->Text);
 
 		OptimizedFullMissionInputs in;
 
@@ -102,9 +123,9 @@ namespace CppCLRWinFormsProject {
 		in.AlitudeOption = this->comboBox4->SelectedIndex + 1;
 		in.Opportunity = System::Decimal::ToInt32(this->numericUpDown2->Value);
 		in.Window = this->comboBox2->SelectedIndex + 1;
-		in.lat_LLS = Double::Parse(this->textBox19->Text);
-		in.lng_LLS = Double::Parse(this->textBox20->Text);
-		in.H_LLS = Double::Parse(this->textBox21->Text);
+		in.lat_LLS = DoubleParse(this->textBox19->Text);
+		in.lng_LLS = DoubleParse(this->textBox20->Text);
+		in.H_LLS = DoubleParse(this->textBox21->Text);
 		in.DW = -15.0;
 		in.H_ALPO = 170.0;
 		in.H_PLPO = 60.0;
@@ -112,15 +133,15 @@ namespace CppCLRWinFormsProject {
 		in.h_a = 60.0;
 		in.h_p = 60.0;
 		in.R2 = Int32::Parse(this->textBox25->Text);
-		in.psi_DS = Double::Parse(this->textBox22->Text);
-		in.DT_TLI_LOI = Double::Parse(this->textBox23->Text);
+		in.psi_DS = DoubleParse(this->textBox22->Text);
+		in.DT_TLI_LOI = DoubleParse(this->textBox23->Text);
 		in.FreeReturn = this->checkBox2->Checked;
 		in.REVS3 = Int32::Parse(this->textBox26->Text);
 		in.REVS4 = Int32::Parse(this->textBox27->Text);
 		in.REVS5 = Int32::Parse(this->textBox28->Text);
-		in.MaxInclination = Double::Parse(this->textBox29->Text);
-		in.lambda_IP = Double::Parse(this->textBox30->Text);
-		in.DT_TEC = Double::Parse(this->textBox31->Text);
+		in.MaxInclination = DoubleParse(this->textBox29->Text);
+		in.lambda_IP = DoubleParse(this->textBox30->Text);
+		in.DT_TEC = DoubleParse(this->textBox31->Text);
 
 		ConvergedMissionDisplay disp;
 		
@@ -161,40 +182,40 @@ namespace CppCLRWinFormsProject {
 		}
 		else
 		{
-			this->richTextBox2->Text = "Launch: " + disp.Launchtime.ToString("F5") + "h GMT" + "\r\n";
-			this->richTextBox2->Text += "TLI Ignition: " + disp.TLIIgnitionTime.ToString("F5") + "h GET" + "\r\n";
-			this->richTextBox2->Text += "TLI Cutoff: " + disp.TLICutoffTime.ToString("F5") + "h GET" + "\r\n";
-			this->richTextBox2->Text += "TLI DV: " + disp.dv_TLI.ToString("F1") + " ft/s" + "\r\n";
-			this->richTextBox2->Text += "PC: " + disp.GMT_PC.ToString("F5") + "h GMT" + "\r\n";
-			this->richTextBox2->Text += "PC: " + disp.GET_PC.ToString("F5") + "h GET" + "\r\n";
-			this->richTextBox2->Text += "Latitude of PC: " + disp.lat_PC.ToString("F2") + " deg" + "\r\n";
-			this->richTextBox2->Text += "LOI-1 DV: " + disp.dv_LOI1.ToString("F1") + " ft/s" + "\r\n";
-			this->richTextBox2->Text += "LOI-1 Plane Change: " + disp.dpsi_LOI1.ToString("F3") + " deg" + "\r\n";
-			this->richTextBox2->Text += "Mass after LOI-1: " + disp.m_LOI1.ToString("F0") + " lbs" + "\r\n";
-			this->richTextBox2->Text += "Time of LOI-2: " + disp.T_LOI2.ToString("F5") + "h GET" + "\r\n";
-			this->richTextBox2->Text += "LOI-2 DV: " + disp.dv_LOI2.ToString("F1") + " ft/s" + "\r\n";
-			this->richTextBox2->Text += "Mass after LOI-2: " + disp.m_LOI2.ToString("F0") + " lbs" + "\r\n";
-			this->richTextBox2->Text += "Landing: " + disp.LandingTime.ToString("F5") + "h GET" + "\r\n";
-			this->richTextBox2->Text += "Sun Elevation: " + disp.LandingSunElevation.ToString("F1") + " deg" + "\r\n";
-			this->richTextBox2->Text += "Approach Azimuth: " + disp.azi_approach.ToString("F2") + " deg" + "\r\n";
-			this->richTextBox2->Text += "Time of LOPC: " + disp.LOPCTime.ToString("F5") + "h GET" + "\r\n";
-			this->richTextBox2->Text += "LOPC DV: " + disp.dv_LOPC.ToString("F1") + " ft/s" + "\r\n";
-			this->richTextBox2->Text += "Mass after LOPC: " + disp.m_LOPC.ToString("F0") + " lbs" + "\r\n";
-			this->richTextBox2->Text += "Lunar liftoff: " + disp.AscentTime.ToString("F5") + " h GET" + "\r\n";
-			this->richTextBox2->Text += "Time of TEI: " + disp.TEITime.ToString("F5") + "h GET" + "\r\n";
-			this->richTextBox2->Text += "TEI DV: " + disp.dv_TEI.ToString("F1") + " ft/s" + "\r\n";
-			this->richTextBox2->Text += "TEI Plane Change: " + disp.dpsi_TEI.ToString("F3") + " deg" + "\r\n";
-			this->richTextBox2->Text += "Mass after TEI: " + disp.m_TEI.ToString("F0") + " lbs" + "\r\n";
-			this->richTextBox2->Text += "Time of EI: " + disp.EITime.ToString("F5") + " h GET" + "\r\n";
-			this->richTextBox2->Text += "Inclination of EI: " + disp.EIInclination.ToString("F2") + " deg" + "\r\n";
-			this->richTextBox2->Text += "Splashdown latitude: " + disp.lat_spl.ToString("F2") + " deg" + "\r\n";
-			this->richTextBox2->Text += "Splashdown longitude: " + disp.lng_spl.ToString("F2") + " deg" + "\r\n";
+			this->richTextBox2->Text = "Launch: " + DoubleToString(disp.Launchtime, "F5") + "h GMT" + "\r\n";
+			this->richTextBox2->Text += "TLI Ignition: " + DoubleToString(disp.TLIIgnitionTime, "F5") + "h GET" + "\r\n";
+			this->richTextBox2->Text += "TLI Cutoff: " + DoubleToString(disp.TLICutoffTime, "F5") + "h GET" + "\r\n";
+			this->richTextBox2->Text += "TLI DV: " + DoubleToString(disp.dv_TLI, "F1") + " ft/s" + "\r\n";
+			this->richTextBox2->Text += "PC: " + DoubleToString(disp.GMT_PC, "F5") + "h GMT" + "\r\n";
+			this->richTextBox2->Text += "PC: " + DoubleToString(disp.GET_PC, "F5") + "h GET" + "\r\n";
+			this->richTextBox2->Text += "Latitude of PC: " + DoubleToString(disp.lat_PC, "F2") + " deg" + "\r\n";
+			this->richTextBox2->Text += "LOI-1 DV: " + DoubleToString(disp.dv_LOI1, "F1") + " ft/s" + "\r\n";
+			this->richTextBox2->Text += "LOI-1 Plane Change: " + DoubleToString(disp.dpsi_LOI1, "F3") + " deg" + "\r\n";
+			this->richTextBox2->Text += "Mass after LOI-1: " + DoubleToString(disp.m_LOI1, "F0") + " lbs" + "\r\n";
+			this->richTextBox2->Text += "Time of LOI-2: " + DoubleToString(disp.T_LOI2, "F5") + "h GET" + "\r\n";
+			this->richTextBox2->Text += "LOI-2 DV: " + DoubleToString(disp.dv_LOI2, "F1") + " ft/s" + "\r\n";
+			this->richTextBox2->Text += "Mass after LOI-2: " + DoubleToString(disp.m_LOI2, "F0") + " lbs" + "\r\n";
+			this->richTextBox2->Text += "Landing: " + DoubleToString(disp.LandingTime, "F5") + "h GET" + "\r\n";
+			this->richTextBox2->Text += "Sun Elevation: " + DoubleToString(disp.LandingSunElevation, "F1") + " deg" + "\r\n";
+			this->richTextBox2->Text += "Approach Azimuth: " + DoubleToString(disp.azi_approach, "F2") + " deg" + "\r\n";
+			this->richTextBox2->Text += "Time of LOPC: " + DoubleToString(disp.LOPCTime, "F5") + "h GET" + "\r\n";
+			this->richTextBox2->Text += "LOPC DV: " + DoubleToString(disp.dv_LOPC, "F1") + " ft/s" + "\r\n";
+			this->richTextBox2->Text += "Mass after LOPC: " + DoubleToString(disp.m_LOPC, "F0") + " lbs" + "\r\n";
+			this->richTextBox2->Text += "Lunar liftoff: " + DoubleToString(disp.AscentTime, "F5") + " h GET" + "\r\n";
+			this->richTextBox2->Text += "Time of TEI: " + DoubleToString(disp.TEITime, "F5") + "h GET" + "\r\n";
+			this->richTextBox2->Text += "TEI DV: " + DoubleToString(disp.dv_TEI, "F1") + " ft/s" + "\r\n";
+			this->richTextBox2->Text += "TEI Plane Change: " + DoubleToString(disp.dpsi_TEI, "F3") + " deg" + "\r\n";
+			this->richTextBox2->Text += "Mass after TEI: " + DoubleToString(disp.m_TEI, "F0") + " lbs" + "\r\n";
+			this->richTextBox2->Text += "Time of EI: " + DoubleToString(disp.EITime, "F5") + " h GET" + "\r\n";
+			this->richTextBox2->Text += "Inclination of EI: " + DoubleToString(disp.EIInclination, "F2") + " deg" + "\r\n";
+			this->richTextBox2->Text += "Splashdown latitude: " + DoubleToString(disp.lat_spl, "F2") + " deg" + "\r\n";
+			this->richTextBox2->Text += "Splashdown longitude: " + DoubleToString(disp.lng_spl, "F2") + " deg" + "\r\n";
 
 			this->richTextBox2->Text += "\r\n" + "DPS Abort (PC+2): " + "\r\n";
-			this->richTextBox2->Text += "DV: " + disp.dv_PC2.ToString("F1") + " ft/s" + "\r\n";
-			this->richTextBox2->Text += "Return inclination: " + disp.EIInclination_PC2.ToString("F2") + " deg" + "\r\n";
+			this->richTextBox2->Text += "DV: " + DoubleToString(disp.dv_PC2, "F1") + " ft/s" + "\r\n";
+			this->richTextBox2->Text += "Return inclination: " + DoubleToString(disp.EIInclination_PC2, "F2") + " deg" + "\r\n";
 
-			this->richTextBox2->Text += "\r\n" + "Remaining DV: " + disp.dv_remain.ToString("F1") + " ft/s" + "\r\n";
+			this->richTextBox2->Text += "\r\n" + "Remaining DV: " + DoubleToString(disp.dv_remain, "F1") + " ft/s" + "\r\n";
 		}
 	}
 
@@ -212,7 +233,7 @@ namespace CppCLRWinFormsProject {
 		int Month = Int32::Parse(this->textBox17->Text);
 		int Day = Int32::Parse(this->textBox16->Text);
 
-		double REVS1 = Double::Parse(this->textBox24->Text); //Orbits in first LPO
+		double REVS1 = DoubleParse(this->textBox24->Text); //Orbits in first LPO
 		int REVS2 = Int32::Parse(this->textBox25->Text); //Orbits in second LPO
 		int REVS3 = Int32::Parse(this->textBox26->Text); //Orbits from landing to LOPC
 		int REVS4 = Int32::Parse(this->textBox27->Text); //Orbits from LOPC to lunar liftoff
@@ -230,7 +251,7 @@ namespace CppCLRWinFormsProject {
 
 		for (unsigned i = 0; i < LVTargetingDataTable->size(); i++)
 		{
-			this->richTextBox3->Text += "Opp: " + LVTargetingDataTable->at(i).Opportunity + " Azi: " + (LVTargetingDataTable->at(i).AZ * DEG).ToString("F2") + "\r\n";
+			this->richTextBox3->Text += "Opp: " + LVTargetingDataTable->at(i).Opportunity + " Azi: " + DoubleToString(LVTargetingDataTable->at(i).AZ * DEG, "F2") + "\r\n";
 		}
 	}
 
@@ -312,7 +333,7 @@ namespace CppCLRWinFormsProject {
 
 		for (unsigned i = 0; i < qrtp->objectives.size(); i++)
 		{
-			this->richTextBox4->Text += "Day: " + qrtp->objectives.at(i).set[0].Day + ", Azi: " + (qrtp->objectives.at(i).set[0].AZ * DEG).ToString("F2") + "\r\n";
+			this->richTextBox4->Text += "Day: " + qrtp->objectives.at(i).set[0].Day + ", Azi: " + DoubleToString(qrtp->objectives.at(i).set[0].AZ * DEG, "F2") + "\r\n";
 		}
 	}
 
@@ -352,7 +373,7 @@ namespace CppCLRWinFormsProject {
 		OrbMech::SStoHHMMSS(presets.TLO, hh, mm, ss);
 
 		this->richTextBox5->Text += "Launch window opening: " + hh.ToString("D2") + ":" + mm.ToString("D2") + ":" + ((int)ss).ToString("D2") + "\r\n";
-		this->richTextBox5->Text += "Launch azimuth: " + presets.AZ[0].ToString("F3") + " deg" + "\r\n";
+		this->richTextBox5->Text += "Launch azimuth: " + DoubleToString(presets.AZ[0], "F3") + " deg" + "\r\n";
 		this->richTextBox5->Text += "LVDC presettings saved under " + tempstr + "\r\n";
 		this->richTextBox5->Text += "Preset tape saved under " + this->textBox44->Text + "\r\n";
 	}
@@ -361,15 +382,15 @@ namespace CppCLRWinFormsProject {
 	{
 		PerformanceData data;
 
-		data.CSMWeight = Double::Parse(this->textBox34->Text);
-		data.SPSPropellant = Double::Parse(this->textBox43->Text);
-		data.LMWeight = Double::Parse(this->textBox35->Text);
-		data.SIVBWeight = Double::Parse(this->textBox36->Text);
-		data.T_MRS = Double::Parse(this->textBox37->Text) / HRS;
-		data.TH1 = Double::Parse(this->textBox38->Text);
-		data.TH2 = Double::Parse(this->textBox39->Text);
-		data.MF1 = Double::Parse(this->textBox40->Text) * HRS;
-		data.MF2 = Double::Parse(this->textBox41->Text) * HRS;
+		data.CSMWeight = DoubleParse(this->textBox34->Text);
+		data.SPSPropellant = DoubleParse(this->textBox43->Text);
+		data.LMWeight = DoubleParse(this->textBox35->Text);
+		data.SIVBWeight = DoubleParse(this->textBox36->Text);
+		data.T_MRS = DoubleParse(this->textBox37->Text) / HRS;
+		data.TH1 = DoubleParse(this->textBox38->Text);
+		data.TH2 = DoubleParse(this->textBox39->Text);
+		data.MF1 = DoubleParse(this->textBox40->Text) * HRS;
+		data.MF2 = DoubleParse(this->textBox41->Text) * HRS;
 
 		return data;
 	}
@@ -395,9 +416,9 @@ namespace CppCLRWinFormsProject {
 
 		this->richTextBox6->Text = "";
 		this->richTextBox6->Text += "Preferred launch time: " + hh.ToString("D2") + ":" + mm.ToString("D2") + ":" + ((int)ss).ToString("D2") + "\r\n";
-		this->richTextBox6->Text += "Launch azimuth: " + data[1].ToString("F3") + " deg" + "\r\n";
-		this->richTextBox6->Text += "MJD at T-4h: " + data[2].ToString("F9") + "\r\n";
-		this->richTextBox6->Text += "MJD at Liftoff: " + data[3].ToString("F9") + "\r\n";
+		this->richTextBox6->Text += "Launch azimuth: " + DoubleToString(data[1], "F3") + " deg" + "\r\n";
+		this->richTextBox6->Text += "MJD at T-4h: " + DoubleToString(data[2], "F9") + "\r\n";
+		this->richTextBox6->Text += "MJD at Liftoff: " + DoubleToString(data[3], "F9") + "\r\n";
 		this->richTextBox6->Text += "RTCC TLI File saved under " + tempstr + "\r\n";
 	}
 
@@ -411,29 +432,29 @@ namespace CppCLRWinFormsProject {
 
 		SaveFileData data;
 
-		data.dValues[0] = Double::Parse(this->textBox1->Text); //Lighting - LSLat
-		data.dValues[1] = Double::Parse(this->textBox2->Text); //Lighting - LSLng
-		data.dValues[2] = Double::Parse(this->textBox12->Text); //First Guess - LSLng
-		data.dValues[3] = Double::Parse(this->textBox13->Text); //First Guess - Launch Azimuth
-		data.dValues[4] = Double::Parse(this->textBox14->Text); //First Guess - LSLat
-		data.dValues[5] = Double::Parse(this->textBox15->Text); //Target Objectives - Launch Azimuth
-		data.dValues[6] = Double::Parse(this->textBox19->Text); //Target Objectives - LSLat
-		data.dValues[7] = Double::Parse(this->textBox20->Text); //Target Objectives - LSLng
-		data.dValues[8] = Double::Parse(this->textBox21->Text); //Target Objectives - LSAlt
-		data.dValues[9] = Double::Parse(this->textBox22->Text); //Target Objectives - LSAzi
-		data.dValues[10] = Double::Parse(this->textBox23->Text); //Target Objectives - DT TLI PC
-		data.dValues[11] = Double::Parse(this->textBox29->Text); //Target Objectives - Max Inclination
-		data.dValues[12] = Double::Parse(this->textBox30->Text); //Target Objectives - Splashdown longitude
-		data.dValues[13] = Double::Parse(this->textBox31->Text); //Target Objectives - TEC time
-		data.dValues[14] = Double::Parse(this->textBox34->Text); //Init - CSM weight
-		data.dValues[15] = Double::Parse(this->textBox35->Text); //Init - LM weight
-		data.dValues[16] = Double::Parse(this->textBox36->Text); //Init - S-IVB weight
-		data.dValues[17] = Double::Parse(this->textBox37->Text); //Init - Time of MRS
-		data.dValues[18] = Double::Parse(this->textBox38->Text); //Init - S-IVB thrust (pre MRS)
-		data.dValues[19] = Double::Parse(this->textBox39->Text); //Init - S-IVB thrust (post MRS)
-		data.dValues[20] = Double::Parse(this->textBox40->Text); //Init - S-IVB MFR (pre MRS)
-		data.dValues[21] = Double::Parse(this->textBox41->Text); //Init - S-IVB MFR (post MRS)
-		data.dValues[22] = Double::Parse(this->textBox43->Text); //Init - SPS propellant
+		data.dValues[0] = DoubleParse(this->textBox1->Text); //Lighting - LSLat
+		data.dValues[1] = DoubleParse(this->textBox2->Text); //Lighting - LSLng
+		data.dValues[2] = DoubleParse(this->textBox12->Text); //First Guess - LSLng
+		data.dValues[3] = DoubleParse(this->textBox13->Text); //First Guess - Launch Azimuth
+		data.dValues[4] = DoubleParse(this->textBox14->Text); //First Guess - LSLat
+		data.dValues[5] = DoubleParse(this->textBox15->Text); //Target Objectives - Launch Azimuth
+		data.dValues[6] = DoubleParse(this->textBox19->Text); //Target Objectives - LSLat
+		data.dValues[7] = DoubleParse(this->textBox20->Text); //Target Objectives - LSLng
+		data.dValues[8] = DoubleParse(this->textBox21->Text); //Target Objectives - LSAlt
+		data.dValues[9] = DoubleParse(this->textBox22->Text); //Target Objectives - LSAzi
+		data.dValues[10] = DoubleParse(this->textBox23->Text); //Target Objectives - DT TLI PC
+		data.dValues[11] = DoubleParse(this->textBox29->Text); //Target Objectives - Max Inclination
+		data.dValues[12] = DoubleParse(this->textBox30->Text); //Target Objectives - Splashdown longitude
+		data.dValues[13] = DoubleParse(this->textBox31->Text); //Target Objectives - TEC time
+		data.dValues[14] = DoubleParse(this->textBox34->Text); //Init - CSM weight
+		data.dValues[15] = DoubleParse(this->textBox35->Text); //Init - LM weight
+		data.dValues[16] = DoubleParse(this->textBox36->Text); //Init - S-IVB weight
+		data.dValues[17] = DoubleParse(this->textBox37->Text); //Init - Time of MRS
+		data.dValues[18] = DoubleParse(this->textBox38->Text); //Init - S-IVB thrust (pre MRS)
+		data.dValues[19] = DoubleParse(this->textBox39->Text); //Init - S-IVB thrust (post MRS)
+		data.dValues[20] = DoubleParse(this->textBox40->Text); //Init - S-IVB MFR (pre MRS)
+		data.dValues[21] = DoubleParse(this->textBox41->Text); //Init - S-IVB MFR (post MRS)
+		data.dValues[22] = DoubleParse(this->textBox43->Text); //Init - SPS propellant
 		for (int i = 23; i < 30; i++)
 		{
 			data.dValues[i] = 0.0;
@@ -493,29 +514,29 @@ namespace CppCLRWinFormsProject {
 		myfile.read((char*)&data, sizeof(struct SaveFileData));
 		myfile.close();
 
-		this->textBox1->Text = data.dValues[0].ToString();
-		this->textBox2->Text = data.dValues[1].ToString();
-		this->textBox12->Text = data.dValues[2].ToString();
-		this->textBox13->Text = data.dValues[3].ToString();
-		this->textBox14->Text = data.dValues[4].ToString();
-		this->textBox15->Text = data.dValues[5].ToString();
-		this->textBox19->Text = data.dValues[6].ToString();
-		this->textBox20->Text = data.dValues[7].ToString();
-		this->textBox21->Text = data.dValues[8].ToString();
-		this->textBox22->Text = data.dValues[9].ToString();
-		this->textBox23->Text = data.dValues[10].ToString();
-		this->textBox29->Text = data.dValues[11].ToString();
-		this->textBox30->Text = data.dValues[12].ToString();
-		this->textBox31->Text = data.dValues[13].ToString();
-		this->textBox34->Text = data.dValues[14].ToString();
-		this->textBox35->Text = data.dValues[15].ToString();
-		this->textBox36->Text = data.dValues[16].ToString();
-		this->textBox37->Text = data.dValues[17].ToString();
-		this->textBox38->Text = data.dValues[18].ToString();
-		this->textBox39->Text = data.dValues[19].ToString();
-		this->textBox40->Text = data.dValues[20].ToString();
-		this->textBox41->Text = data.dValues[21].ToString();
-		this->textBox43->Text = data.dValues[22].ToString();
+		this->textBox1->Text = DoubleToString(data.dValues[0]);
+		this->textBox2->Text = DoubleToString(data.dValues[1]);
+		this->textBox12->Text = DoubleToString(data.dValues[2]);
+		this->textBox13->Text = DoubleToString(data.dValues[3]);
+		this->textBox14->Text = DoubleToString(data.dValues[4]);
+		this->textBox15->Text = DoubleToString(data.dValues[5]);
+		this->textBox19->Text = DoubleToString(data.dValues[6]);
+		this->textBox20->Text = DoubleToString(data.dValues[7]);
+		this->textBox21->Text = DoubleToString(data.dValues[8]);
+		this->textBox22->Text = DoubleToString(data.dValues[9]);
+		this->textBox23->Text = DoubleToString(data.dValues[10]);
+		this->textBox29->Text = DoubleToString(data.dValues[11]);
+		this->textBox30->Text = DoubleToString(data.dValues[12]);
+		this->textBox31->Text = DoubleToString(data.dValues[13]);
+		this->textBox34->Text = DoubleToString(data.dValues[14]);
+		this->textBox35->Text = DoubleToString(data.dValues[15]);
+		this->textBox36->Text = DoubleToString(data.dValues[16]);
+		this->textBox37->Text = DoubleToString(data.dValues[17]);
+		this->textBox38->Text = DoubleToString(data.dValues[18]);
+		this->textBox39->Text = DoubleToString(data.dValues[19]);
+		this->textBox40->Text = DoubleToString(data.dValues[20]);
+		this->textBox41->Text = DoubleToString(data.dValues[21]);
+		this->textBox43->Text = DoubleToString(data.dValues[22]);
 
 		this->textBox3->Text = data.iValues[0].ToString();
 		this->textBox4->Text = data.iValues[1].ToString();
