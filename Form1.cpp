@@ -112,6 +112,7 @@ namespace CppCLRWinFormsProject {
 		int Year = Int32::Parse(this->textBox18->Text);
 		int Month = Int32::Parse(this->textBox17->Text);
 		int Day = Int32::Parse(this->textBox16->Text);
+		double EstimatedTime = DoubleParse(this->textBox45->Text);
 		double Azi = DoubleParse(this->textBox15->Text);
 
 		OptimizedFullMissionInputs in;
@@ -119,8 +120,9 @@ namespace CppCLRWinFormsProject {
 		in.Year = Year;
 		in.Month = Month;
 		in.Day = Day;
+		in.EstimatedTime = EstimatedTime;
 		in.Azi = Azi;
-		in.AlitudeOption = this->comboBox4->SelectedIndex + 1;
+		in.AltitudeOption = this->comboBox4->SelectedIndex + 1;
 		in.Opportunity = System::Decimal::ToInt32(this->numericUpDown2->Value);
 		in.Window = this->comboBox2->SelectedIndex + 1;
 		in.lat_LLS = DoubleParse(this->textBox19->Text);
@@ -455,7 +457,8 @@ namespace CppCLRWinFormsProject {
 		data.dValues[20] = DoubleParse(this->textBox40->Text); //Init - S-IVB MFR (pre MRS)
 		data.dValues[21] = DoubleParse(this->textBox41->Text); //Init - S-IVB MFR (post MRS)
 		data.dValues[22] = DoubleParse(this->textBox43->Text); //Init - SPS propellant
-		for (int i = 23; i < 30; i++)
+		data.dValues[23] = DoubleParse(this->textBox45->Text); //Target Objectives - Estimated Launch Time
+		for (int i = 24; i < 30; i++)
 		{
 			data.dValues[i] = 0.0;
 		}
@@ -537,6 +540,7 @@ namespace CppCLRWinFormsProject {
 		this->textBox40->Text = DoubleToString(data.dValues[20]);
 		this->textBox41->Text = DoubleToString(data.dValues[21]);
 		this->textBox43->Text = DoubleToString(data.dValues[22]);
+		this->textBox45->Text = DoubleToString(data.dValues[23]);
 
 		this->textBox3->Text = data.iValues[0].ToString();
 		this->textBox4->Text = data.iValues[1].ToString();

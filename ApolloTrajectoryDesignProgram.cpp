@@ -96,17 +96,17 @@ int ApolloTrajectoryDesignProgram::OptimizedFullMission(const PerformanceData& p
 	EOIProcessorDataSet EOIData;
 	TLIFirstGuessOutputs fgout;
 	OrbMech::SphericalCoordinates coord_EOI;
-	double LaunchAzimuth, DT_L;
+	double LaunchAzimuth, DT_L, Hour;
 	int err;
 
 	SetupBasics(in.Year, in.Month, in.Day);
 
 	//Get insertion state
 	LaunchAzimuth = in.Azi * RAD;
-	EOIData = OrbMech::GetEOIProcessorData(0, in.AlitudeOption);
+	EOIData = OrbMech::GetEOIProcessorData(0, in.AltitudeOption);
 	OrbMech::EOIProcessor(EOIData, LaunchAzimuth, coord_EOI, DT_L);
 
-	double Hour = 12.0; //Search from noon
+	Hour = in.EstimatedTime; //Time from which the initial guess logic will search +/- 12 hours
 
 	err = CIST(Hour, coord_EOI, in.Window, in.Opportunity, fgout);
 

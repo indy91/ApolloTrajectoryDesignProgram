@@ -89,8 +89,9 @@ struct OptimizedFullMissionInputs
 	int Year;
 	int Month;
 	int Day;
+	double EstimatedTime; //Estimated time from which the initial guess logic will search +/- 12 hours, hours
 	double Azi; //Launch azimuth
-	int AlitudeOption; //1 = 90 NM, 2 = 100 NM parking orbit
+	int AltitudeOption; //1 = 90 NM, 2 = 100 NM parking orbit
 	int Opportunity; //1 or 2
 	int Window; //1 = Pacific window, 2 = Atlantic window
 

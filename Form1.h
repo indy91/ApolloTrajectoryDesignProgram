@@ -259,6 +259,9 @@ private: System::Windows::Forms::Label^ label79;
 private: System::Windows::Forms::Label^ label78;
 private: System::Windows::Forms::Label^ label77;
 private: System::Windows::Forms::DataVisualization::Charting::Chart^ chart2;
+private: System::Windows::Forms::Label^ label81;
+private: System::Windows::Forms::Label^ label82;
+private: System::Windows::Forms::TextBox^ textBox45;
 
 
 	private:
@@ -359,6 +362,7 @@ private: System::Windows::Forms::DataVisualization::Charting::Chart^ chart2;
 			this->label12 = (gcnew System::Windows::Forms::Label());
 			this->label9 = (gcnew System::Windows::Forms::Label());
 			this->tabPage3 = (gcnew System::Windows::Forms::TabPage());
+			this->label81 = (gcnew System::Windows::Forms::Label());
 			this->label80 = (gcnew System::Windows::Forms::Label());
 			this->label79 = (gcnew System::Windows::Forms::Label());
 			this->label78 = (gcnew System::Windows::Forms::Label());
@@ -440,6 +444,8 @@ private: System::Windows::Forms::DataVisualization::Charting::Chart^ chart2;
 			this->textBox44 = (gcnew System::Windows::Forms::TextBox());
 			this->label73 = (gcnew System::Windows::Forms::Label());
 			this->richTextBox6 = (gcnew System::Windows::Forms::RichTextBox());
+			this->textBox45 = (gcnew System::Windows::Forms::TextBox());
+			this->label82 = (gcnew System::Windows::Forms::Label());
 			this->tabControl1->SuspendLayout();
 			this->tabPage6->SuspendLayout();
 			this->groupBox1->SuspendLayout();
@@ -1223,6 +1229,9 @@ private: System::Windows::Forms::DataVisualization::Charting::Chart^ chart2;
 			// tabPage3
 			// 
 			this->tabPage3->BackColor = System::Drawing::SystemColors::Control;
+			this->tabPage3->Controls->Add(this->label82);
+			this->tabPage3->Controls->Add(this->textBox45);
+			this->tabPage3->Controls->Add(this->label81);
 			this->tabPage3->Controls->Add(this->label80);
 			this->tabPage3->Controls->Add(this->label79);
 			this->tabPage3->Controls->Add(this->label78);
@@ -1288,6 +1297,15 @@ private: System::Windows::Forms::DataVisualization::Charting::Chart^ chart2;
 			this->tabPage3->Size = System::Drawing::Size(1132, 625);
 			this->tabPage3->TabIndex = 2;
 			this->tabPage3->Text = L"Mission Planning";
+			// 
+			// label81
+			// 
+			this->label81->AutoSize = true;
+			this->label81->Location = System::Drawing::Point(251, 100);
+			this->label81->Name = L"label81";
+			this->label81->Size = System::Drawing::Size(61, 13);
+			this->label81->TabIndex = 99;
+			this->label81->Text = L"Estim. Time";
 			// 
 			// label80
 			// 
@@ -2040,6 +2058,23 @@ private: System::Windows::Forms::DataVisualization::Charting::Chart^ chart2;
 			this->richTextBox6->Size = System::Drawing::Size(333, 232);
 			this->richTextBox6->TabIndex = 0;
 			this->richTextBox6->Text = L"";
+			// 
+			// textBox45
+			// 
+			this->textBox45->Location = System::Drawing::Point(323, 97);
+			this->textBox45->Name = L"textBox45";
+			this->textBox45->Size = System::Drawing::Size(42, 20);
+			this->textBox45->TabIndex = 100;
+			this->textBox45->Text = L"12";
+			// 
+			// label82
+			// 
+			this->label82->AutoSize = true;
+			this->label82->Location = System::Drawing::Point(371, 100);
+			this->label82->Name = L"label82";
+			this->label82->Size = System::Drawing::Size(21, 13);
+			this->label82->TabIndex = 101;
+			this->label82->Text = L"hrs";
 			// 
 			// Form1
 			// 

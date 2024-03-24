@@ -16,6 +16,8 @@ First guess page. The primary purpose of this page is to select the launch day. 
 
 There isn't an easy way to determine if the Pacific or Atlantic TLI window is the best for a given lunar mission. Often the Atlantic launch windows will lead to a night launch. Certain lunar landing site latitudes can be reached better by the Atlantic window. The Pacific window was used by all Apollo missions except for Apollo 17.
 
+To evaluate the daily launch window, run this page with at least 72° and 108° launch azimuths. Should the launch window span across midnight an additional step will be necessary on the mission planning page.
+
 Mission planning page.
 
 The results from this page are written to three files, two of which are loaded by the RTCC in NASSP. These files need to be copied into the Config\ProjectApollo\RTCC folder in your NASSP install. The third file contains the launch vehicle targeting objectives for the actual TLI planning in the ATDP. The ATDP is split up in completely separate sections, which can be used individually. All of the mission planing would have been done by the Manned Spacecraft Center. The result of this planning would then be sent to Marshall Space Flight Center, where the actual launch vehicle targeting is done. The LV targeting objectives file is this interface between the two NASA centers. When MSC mission planning is complete, the planning process doesn't have to be started from scratch if launch vehicle only changes are done. Instead the LV targeting objectives file can be loaded on the LV preprocessor page and the process can continue from there on.
@@ -27,6 +29,7 @@ The mission planning process consists of planning not just one mission, but the 
 Here follow descriptions of each input:
 
 -Year, Month, Day: Date on which the launch will occur. 
+-Estim. Time: An initial guess logic is run to determine a preliminary time of liftoff. This initial logic by default starts searching from 12h GMT and will find a solution at +/- 12 hours from that. Should the launch window span across midnight GMT (see description of first guess page) an issue can occur where the converged launch time is at shortly before midnight for one launch azimuth and at shortly after midnight of the same(!) day for a slightly larger launch azimuth. Of course it should be finding a launch shortly after midnight on the following day instead. To achieve this, set this estimated time to e.g. 23h instead of 12h GMT. The output launch time should now be slightly larger than 24 hours instead of slightly larger than 0 hours, which is the indication that it (correctly) found a launch at the beginning of the next day. Aside from this potential issue, the default value of 12 hours does not usually need to be changed.
 -Azimuth: In degrees, should be a number between 72 and 108. 
 -Window. Pacific and Atlantic launch windows are possible.  
 -Opportunity: Only first and second TLI opportunities are supported, happening on the second and third orbit after launch, respectively.  
