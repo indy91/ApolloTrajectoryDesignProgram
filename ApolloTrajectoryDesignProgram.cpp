@@ -321,15 +321,9 @@ int ApolloTrajectoryDesignProgram::OptimizedFullMission(const PerformanceData& p
 	}
 
 	out.m_SPS_remain = perf.SPSPropellant - (perf.CSMWeight - out.m_TEI);
-	if (out.m_SPS_remain > 0.0)
-	{
-		out.dv_remain = iter_arr.isp_SPS * OrbMech::G0ER * log(out.m_TEI/(out.m_TEI - out.m_SPS_remain));
-		out.dv_remain /= OrbMech::FPS2ERPH;
-	}
-	else
-	{
-		out.dv_remain = 0.0;
-	}
+
+	out.dv_remain = iter_arr.isp_SPS * OrbMech::G0ER * log(out.m_TEI/(out.m_TEI - out.m_SPS_remain));
+	out.dv_remain /= OrbMech::FPS2ERPH;
 
 	//Write LV targeting objectives
 	LVTargetingData = WriteLVTargetingObjectives(LaunchAzimuth, in.Window);
