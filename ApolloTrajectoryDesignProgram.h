@@ -239,7 +239,7 @@ public:
 	ApolloTrajectoryDesignProgram();
 
 	//Step 1: Landing site sun elevation evaluation
-	double LunarSunElevationAngle(int Year, int Month, int Day, double Hour, double Lat_SG, double Lng_SG);
+	void LunarSunElevationAngle(int Year, int Month, int Day, double Hour, double Lat_SG, double Lng_SG, double &Elev, bool &Rising);
 	//Step 2: First guess logic
 	FirstGuessLogicDisplay CalculateFirstGuessLogic(int Year, int Month, int Day, double Azi, int AlitudeOption, int Window, int Opportunity, int Orbits, double Lat_SG, double Lng_SG);
 	//Step 3: Optimize full mission

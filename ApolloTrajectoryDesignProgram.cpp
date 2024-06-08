@@ -30,15 +30,29 @@ ApolloTrajectoryDesignProgram::ApolloTrajectoryDesignProgram() :
 
 }
 
-double ApolloTrajectoryDesignProgram::LunarSunElevationAngle(int Year, int Month, int Day, double Hour, double Lat_SG, double Lng_SG)
+void ApolloTrajectoryDesignProgram::LunarSunElevationAngle(int Year, int Month, int Day, double Hour, double Lat_SG, double Lng_SG, double &Elev, bool &Rising)
 {
+	//Get sun elevation angle at desired time and whether the sun is rising or setting
+
 	VECTOR3 R_S_SG;
+	double Elev2;
 
 	SetupBasics(Year, Month, Day);
 
 	R_S_SG = OrbMech::r_from_latlong(Lat_SG*RAD, Lng_SG*RAD) * OrbMech::R_Moon;
 
-	return OrbMech::LunarSunElevationAngleAtMJD(MDGSUN, GMTBASE, Hour, R_S_SG);
+	Elev = OrbMech::LunarSunElevationAngleAtMJD(MDGSUN, GMTBASE, Hour, R_S_SG);
+
+	Elev2 = OrbMech::LunarSunElevationAngleAtMJD(MDGSUN, GMTBASE, Hour + 0.01, R_S_SG);
+
+	if (Elev2 > Elev)
+	{
+		Rising = true;
+	}
+	else
+	{
+		Rising = false;
+	}
 }
 
 FirstGuessLogicDisplay ApolloTrajectoryDesignProgram::CalculateFirstGuessLogic(int Year, int Month, int Day, double Azi, int AlitudeOption, int Window, int Opportunity, int Orbits, double Lat_SG, double Lng_SG)

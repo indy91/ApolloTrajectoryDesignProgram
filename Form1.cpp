@@ -56,10 +56,24 @@ namespace CppCLRWinFormsProject {
 		double Hour = (double)Int32::Parse(this->textBox7->Text);
 
 		ApolloTrajectoryDesignProgram traj;
+		double Elev;
+		bool Rising;
 
-		double Elev = traj.LunarSunElevationAngle(Year, Month, Day, Hour, lat, lng) * DEG;
+		traj.LunarSunElevationAngle(Year, Month, Day, Hour, lat, lng, Elev, Rising);
+		Elev *= DEG;
 
 		this->textBox6->Text = DoubleToString(Elev, "F2");
+
+		if (Rising)
+		{
+			this->label84->ForeColor = System::Drawing::Color::Green;
+			this->label84->Text = L"SUN RISING";
+		}
+		else
+		{
+			this->label84->ForeColor = System::Drawing::Color::Red;
+			this->label84->Text = L"SUN SETTING";
+		}
 
 		//Copy inputs over to next tab
 		this->textBox10->Text = this->textBox3->Text;
