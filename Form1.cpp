@@ -98,10 +98,11 @@ namespace CppCLRWinFormsProject {
 		int LunarOrbits = Int32::Parse(this->textBox11->Text);
 		int Window = this->comboBox1->SelectedIndex + 1;
 		int Opportunity = System::Decimal::ToInt32(this->numericUpDown1->Value);
+		int TLI1stOppOrbit = Int32::Parse(this->textBox46->Text);
 
 		ApolloTrajectoryDesignProgram traj;
 
-		FirstGuessLogicDisplay disp = traj.CalculateFirstGuessLogic(Year, Month, Day, Azi, AlitudeOption, Window, Opportunity, LunarOrbits, lat, lng);
+		FirstGuessLogicDisplay disp = traj.CalculateFirstGuessLogic(Year, Month, Day, Azi, AlitudeOption, Window, Opportunity, TLI1stOppOrbit, LunarOrbits, lat, lng);
 
 		this->richTextBox1->Text = "Launch: " + DoubleToString(disp.Launchtime, "F5") + "h GMT" + "\r\n";
 		this->richTextBox1->Text += "TLI: " + DoubleToString(disp.TLItime, "F5") + "h GET" + "\r\n";
@@ -139,6 +140,7 @@ namespace CppCLRWinFormsProject {
 		in.AltitudeOption = this->comboBox4->SelectedIndex + 1;
 		in.Opportunity = System::Decimal::ToInt32(this->numericUpDown2->Value);
 		in.Window = this->comboBox2->SelectedIndex + 1;
+		in.TLI1stOppOrbit = Int32::Parse(this->textBox46->Text);
 		in.lat_LLS = DoubleParse(this->textBox19->Text);
 		in.lng_LLS = DoubleParse(this->textBox20->Text);
 		in.H_LLS = DoubleParse(this->textBox21->Text);
@@ -199,6 +201,7 @@ namespace CppCLRWinFormsProject {
 		else
 		{
 			this->richTextBox2->Text = "Launch: " + DoubleToString(disp.Launchtime, "F5") + "h GMT" + "\r\n";
+			this->richTextBox2->Text += "EOI: " + DoubleToString(disp.T_EOI, "F5") + "h GET" + "\r\n";
 			this->richTextBox2->Text += "TLI Ignition: " + DoubleToString(disp.TLIIgnitionTime, "F5") + "h GET" + "\r\n";
 			this->richTextBox2->Text += "TLI Cutoff: " + DoubleToString(disp.TLICutoffTime, "F5") + "h GET" + "\r\n";
 			this->richTextBox2->Text += "TLI DV: " + DoubleToString(disp.dv_TLI, "F1") + " ft/s" + "\r\n";
@@ -502,7 +505,8 @@ namespace CppCLRWinFormsProject {
 		data.iValues[22] = System::Decimal::ToInt32(this->numericUpDown2->Value); //Target Objectives - Opportunity
 		data.iValues[23] = this->checkBox1->Checked ? 1 : 0; //LV targeting - free return
 		data.iValues[24] = this->checkBox2->Checked ? 1 : 0; //Target objectives - free return
-		for (int i = 25; i < 30; i++)
+		data.iValues[25] = Int32::Parse(this->textBox46->Text); //Init - Orbit of 1st TLI opportunity
+		for (int i = 26; i < 30; i++)
 		{
 			data.iValues[i] = 0;
 		}
@@ -581,6 +585,7 @@ namespace CppCLRWinFormsProject {
 		this->numericUpDown2->Value = data.iValues[22];
 		this->checkBox1->Checked = data.iValues[23] == 1 ? true : false;
 		this->checkBox2->Checked = data.iValues[24] == 1 ? true : false;
+		this->textBox46->Text = data.iValues[25].ToString();
 
 		this->textBox32->Text = gcnew String(data.LVTargetingObjectivesFile);
 		this->textBox44->Text = gcnew String(data.PresetTapeFile);

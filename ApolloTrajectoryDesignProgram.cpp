@@ -55,7 +55,7 @@ void ApolloTrajectoryDesignProgram::LunarSunElevationAngle(int Year, int Month, 
 	}
 }
 
-FirstGuessLogicDisplay ApolloTrajectoryDesignProgram::CalculateFirstGuessLogic(int Year, int Month, int Day, double Azi, int AlitudeOption, int Window, int Opportunity, int Orbits, double Lat_SG, double Lng_SG)
+FirstGuessLogicDisplay ApolloTrajectoryDesignProgram::CalculateFirstGuessLogic(int Year, int Month, int Day, double Azi, int AlitudeOption, int Window, int Opportunity, int TLI1stOppOrbit, int Orbits, double Lat_SG, double Lng_SG)
 {
 	DebugMessages.clear();
 
@@ -76,7 +76,7 @@ FirstGuessLogicDisplay ApolloTrajectoryDesignProgram::CalculateFirstGuessLogic(i
 
 	double Hour = 12.0; //Search from noon
 
-	err = CIST(Hour, coord_EOI, Window, Opportunity, out);
+	err = CIST(Hour, coord_EOI, Window, Opportunity, TLI1stOppOrbit, out);
 
 	if (err) return outdisp;
 
@@ -122,7 +122,7 @@ int ApolloTrajectoryDesignProgram::OptimizedFullMission(const PerformanceData& p
 
 	Hour = in.EstimatedTime; //Time from which the initial guess logic will search +/- 12 hours
 
-	err = CIST(Hour, coord_EOI, in.Window, in.Opportunity, fgout);
+	err = CIST(Hour, coord_EOI, in.Window, in.Opportunity, in.TLI1stOppOrbit, fgout);
 
 	if (err) return 1;
 
@@ -296,6 +296,7 @@ int ApolloTrajectoryDesignProgram::OptimizedFullMission(const PerformanceData& p
 	if (converr) return 7;
 
 	out.Launchtime = iter_arr.T_L;
+	out.T_EOI = iter_arr.sv_EOI.GMT - iter_arr.T_L;
 	out.TLIIgnitionTime = iter_arr.sv_TLI_Ignition.GMT - iter_arr.T_L;
 	out.TLICutoffTime = iter_arr.sv_TLI_Cutoff.GMT - iter_arr.T_L;
 	out.dv_TLI = iter_arr.dv_TLI / OrbMech::FPS2ERPH;
@@ -690,7 +691,7 @@ bool ApolloTrajectoryDesignProgram::SetupBasics(int Year, int Month, int Day)
 	return false;
 }
 
-int ApolloTrajectoryDesignProgram::CIST(double Hour, OrbMech::SphericalCoordinates coord_EOI, int Window, int Opportunity, TLIFirstGuessOutputs& out)
+int ApolloTrajectoryDesignProgram::CIST(double Hour, OrbMech::SphericalCoordinates coord_EOI, int Window, int Opportunity, int TLI1stOppOrbit, TLIFirstGuessOutputs& out)
 {
 	TLIFirstGuessInputs in;
 	int err;
@@ -706,20 +707,8 @@ int ApolloTrajectoryDesignProgram::CIST(double Hour, OrbMech::SphericalCoordinat
 	in.XPC = 0.0;
 	in.RPC = 60.0 + OrbMech::R_Moon * OrbMech::ER2NM; //NM
 
-	if (Opportunity == 1)
-	{
-		in.ORBNUM = 2.0;
-	}
-	else
-	{
-		in.ORBNUM = 3.0;
-	}
+	in.ORBNUM = (double)(Opportunity - 1 + TLI1stOppOrbit);
 	in.IPOA = Window;
-
-	if (Window == 2)
-	{
-		in.ORBNUM += 1.0;
-	}
 
 	in.IPERT = 3;
 	in.MDGSUN = &MDGSUN;

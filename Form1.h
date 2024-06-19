@@ -265,6 +265,8 @@ private: System::Windows::Forms::TextBox^ textBox45;
 
 private: System::Windows::Forms::Label^ label83;
 private: System::Windows::Forms::Label^ label84;
+private: System::Windows::Forms::Label^ label85;
+private: System::Windows::Forms::TextBox^ textBox46;
 
 
 	private:
@@ -280,12 +282,12 @@ private: System::Windows::Forms::Label^ label84;
 		/// </summary>
 		void InitializeComponent(void)
 		{
-			System::Windows::Forms::DataVisualization::Charting::ChartArea^ chartArea17 = (gcnew System::Windows::Forms::DataVisualization::Charting::ChartArea());
-			System::Windows::Forms::DataVisualization::Charting::Legend^ legend17 = (gcnew System::Windows::Forms::DataVisualization::Charting::Legend());
-			System::Windows::Forms::DataVisualization::Charting::Series^ series17 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
-			System::Windows::Forms::DataVisualization::Charting::ChartArea^ chartArea18 = (gcnew System::Windows::Forms::DataVisualization::Charting::ChartArea());
-			System::Windows::Forms::DataVisualization::Charting::Legend^ legend18 = (gcnew System::Windows::Forms::DataVisualization::Charting::Legend());
-			System::Windows::Forms::DataVisualization::Charting::Series^ series18 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
+			System::Windows::Forms::DataVisualization::Charting::ChartArea^ chartArea3 = (gcnew System::Windows::Forms::DataVisualization::Charting::ChartArea());
+			System::Windows::Forms::DataVisualization::Charting::Legend^ legend3 = (gcnew System::Windows::Forms::DataVisualization::Charting::Legend());
+			System::Windows::Forms::DataVisualization::Charting::Series^ series3 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
+			System::Windows::Forms::DataVisualization::Charting::ChartArea^ chartArea4 = (gcnew System::Windows::Forms::DataVisualization::Charting::ChartArea());
+			System::Windows::Forms::DataVisualization::Charting::Legend^ legend4 = (gcnew System::Windows::Forms::DataVisualization::Charting::Legend());
+			System::Windows::Forms::DataVisualization::Charting::Series^ series4 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
 			this->tabControl1 = (gcnew System::Windows::Forms::TabControl());
 			this->tabPage6 = (gcnew System::Windows::Forms::TabPage());
 			this->label72 = (gcnew System::Windows::Forms::Label());
@@ -324,6 +326,8 @@ private: System::Windows::Forms::Label^ label84;
 			this->label52 = (gcnew System::Windows::Forms::Label());
 			this->label51 = (gcnew System::Windows::Forms::Label());
 			this->tabPage1 = (gcnew System::Windows::Forms::TabPage());
+			this->label84 = (gcnew System::Windows::Forms::Label());
+			this->label83 = (gcnew System::Windows::Forms::Label());
 			this->button1 = (gcnew System::Windows::Forms::Button());
 			this->label8 = (gcnew System::Windows::Forms::Label());
 			this->label7 = (gcnew System::Windows::Forms::Label());
@@ -449,8 +453,8 @@ private: System::Windows::Forms::Label^ label84;
 			this->textBox44 = (gcnew System::Windows::Forms::TextBox());
 			this->label73 = (gcnew System::Windows::Forms::Label());
 			this->richTextBox6 = (gcnew System::Windows::Forms::RichTextBox());
-			this->label83 = (gcnew System::Windows::Forms::Label());
-			this->label84 = (gcnew System::Windows::Forms::Label());
+			this->label85 = (gcnew System::Windows::Forms::Label());
+			this->textBox46 = (gcnew System::Windows::Forms::TextBox());
 			this->tabControl1->SuspendLayout();
 			this->tabPage6->SuspendLayout();
 			this->groupBox1->SuspendLayout();
@@ -484,6 +488,8 @@ private: System::Windows::Forms::Label^ label84;
 			// tabPage6
 			// 
 			this->tabPage6->BackColor = System::Drawing::SystemColors::Control;
+			this->tabPage6->Controls->Add(this->textBox46);
+			this->tabPage6->Controls->Add(this->label85);
 			this->tabPage6->Controls->Add(this->label72);
 			this->tabPage6->Controls->Add(this->textBox43);
 			this->tabPage6->Controls->Add(this->label71);
@@ -775,7 +781,7 @@ private: System::Windows::Forms::Label^ label84;
 			// label55
 			// 
 			this->label55->AutoSize = true;
-			this->label55->Location = System::Drawing::Point(988, 234);
+			this->label55->Location = System::Drawing::Point(988, 258);
 			this->label55->Name = L"label55";
 			this->label55->Size = System::Drawing::Size(20, 13);
 			this->label55->TabIndex = 6;
@@ -783,7 +789,7 @@ private: System::Windows::Forms::Label^ label84;
 			// 
 			// textBox35
 			// 
-			this->textBox35->Location = System::Drawing::Point(870, 231);
+			this->textBox35->Location = System::Drawing::Point(870, 255);
 			this->textBox35->Name = L"textBox35";
 			this->textBox35->Size = System::Drawing::Size(100, 20);
 			this->textBox35->TabIndex = 5;
@@ -792,7 +798,7 @@ private: System::Windows::Forms::Label^ label84;
 			// label54
 			// 
 			this->label54->AutoSize = true;
-			this->label54->Location = System::Drawing::Point(742, 234);
+			this->label54->Location = System::Drawing::Point(742, 258);
 			this->label54->Name = L"label54";
 			this->label54->Size = System::Drawing::Size(59, 13);
 			this->label54->TabIndex = 4;
@@ -801,7 +807,7 @@ private: System::Windows::Forms::Label^ label84;
 			// label53
 			// 
 			this->label53->AutoSize = true;
-			this->label53->Location = System::Drawing::Point(988, 191);
+			this->label53->Location = System::Drawing::Point(988, 219);
 			this->label53->Name = L"label53";
 			this->label53->Size = System::Drawing::Size(20, 13);
 			this->label53->TabIndex = 3;
@@ -809,7 +815,7 @@ private: System::Windows::Forms::Label^ label84;
 			// 
 			// textBox34
 			// 
-			this->textBox34->Location = System::Drawing::Point(870, 188);
+			this->textBox34->Location = System::Drawing::Point(870, 216);
 			this->textBox34->Name = L"textBox34";
 			this->textBox34->Size = System::Drawing::Size(100, 20);
 			this->textBox34->TabIndex = 2;
@@ -818,7 +824,7 @@ private: System::Windows::Forms::Label^ label84;
 			// label52
 			// 
 			this->label52->AutoSize = true;
-			this->label52->Location = System::Drawing::Point(742, 191);
+			this->label52->Location = System::Drawing::Point(742, 219);
 			this->label52->Name = L"label52";
 			this->label52->Size = System::Drawing::Size(67, 13);
 			this->label52->TabIndex = 1;
@@ -827,7 +833,7 @@ private: System::Windows::Forms::Label^ label84;
 			// label51
 			// 
 			this->label51->AutoSize = true;
-			this->label51->Location = System::Drawing::Point(742, 143);
+			this->label51->Location = System::Drawing::Point(742, 178);
 			this->label51->Name = L"label51";
 			this->label51->Size = System::Drawing::Size(93, 13);
 			this->label51->TabIndex = 0;
@@ -859,6 +865,24 @@ private: System::Windows::Forms::Label^ label84;
 			this->tabPage1->Size = System::Drawing::Size(1132, 625);
 			this->tabPage1->TabIndex = 0;
 			this->tabPage1->Text = L"Lighting";
+			// 
+			// label84
+			// 
+			this->label84->AutoSize = true;
+			this->label84->Location = System::Drawing::Point(568, 288);
+			this->label84->Name = L"label84";
+			this->label84->Size = System::Drawing::Size(33, 13);
+			this->label84->TabIndex = 34;
+			this->label84->Text = L"None";
+			// 
+			// label83
+			// 
+			this->label83->AutoSize = true;
+			this->label83->Location = System::Drawing::Point(514, 288);
+			this->label83->Name = L"label83";
+			this->label83->Size = System::Drawing::Size(37, 13);
+			this->label83->TabIndex = 32;
+			this->label83->Text = L"Status";
 			// 
 			// button1
 			// 
@@ -1867,17 +1891,17 @@ private: System::Windows::Forms::Label^ label84;
 			// 
 			// chart2
 			// 
-			chartArea17->Name = L"ChartArea1";
-			this->chart2->ChartAreas->Add(chartArea17);
-			legend17->Name = L"Legend1";
-			this->chart2->Legends->Add(legend17);
+			chartArea3->Name = L"ChartArea1";
+			this->chart2->ChartAreas->Add(chartArea3);
+			legend3->Name = L"Legend1";
+			this->chart2->Legends->Add(legend3);
 			this->chart2->Location = System::Drawing::Point(669, 50);
 			this->chart2->Name = L"chart2";
-			series17->ChartArea = L"ChartArea1";
-			series17->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Point;
-			series17->Legend = L"Legend1";
-			series17->Name = L"Launch Azimuth";
-			this->chart2->Series->Add(series17);
+			series3->ChartArea = L"ChartArea1";
+			series3->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Point;
+			series3->Legend = L"Legend1";
+			series3->Name = L"Launch Azimuth";
+			this->chart2->Series->Add(series3);
 			this->chart2->Size = System::Drawing::Size(452, 274);
 			this->chart2->TabIndex = 4;
 			this->chart2->Text = L"chart2";
@@ -1911,17 +1935,17 @@ private: System::Windows::Forms::Label^ label84;
 			// 
 			// chart1
 			// 
-			chartArea18->Name = L"ChartArea1";
-			this->chart1->ChartAreas->Add(chartArea18);
-			legend18->Name = L"Legend1";
-			this->chart1->Legends->Add(legend18);
+			chartArea4->Name = L"ChartArea1";
+			this->chart1->ChartAreas->Add(chartArea4);
+			legend4->Name = L"Legend1";
+			this->chart1->Legends->Add(legend4);
 			this->chart1->Location = System::Drawing::Point(669, 344);
 			this->chart1->Name = L"chart1";
-			series18->ChartArea = L"ChartArea1";
-			series18->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Point;
-			series18->Legend = L"Legend1";
-			series18->Name = L"LATM";
-			this->chart1->Series->Add(series18);
+			series4->ChartArea = L"ChartArea1";
+			series4->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Point;
+			series4->Legend = L"Legend1";
+			series4->Name = L"LATM";
+			this->chart1->Series->Add(series4);
 			this->chart1->Size = System::Drawing::Size(452, 274);
 			this->chart1->TabIndex = 0;
 			this->chart1->Text = L"chart1";
@@ -2083,23 +2107,22 @@ private: System::Windows::Forms::Label^ label84;
 			this->richTextBox6->TabIndex = 0;
 			this->richTextBox6->Text = L"";
 			// 
-			// label83
+			// label85
 			// 
-			this->label83->AutoSize = true;
-			this->label83->Location = System::Drawing::Point(514, 288);
-			this->label83->Name = L"label83";
-			this->label83->Size = System::Drawing::Size(37, 13);
-			this->label83->TabIndex = 32;
-			this->label83->Text = L"Status";
+			this->label85->AutoSize = true;
+			this->label85->Location = System::Drawing::Point(742, 122);
+			this->label85->Name = L"label85";
+			this->label85->Size = System::Drawing::Size(88, 13);
+			this->label85->TabIndex = 31;
+			this->label85->Text = L"Orbit 1st TLI Opp";
 			// 
-			// label84
+			// textBox46
 			// 
-			this->label84->AutoSize = true;
-			this->label84->Location = System::Drawing::Point(568, 288);
-			this->label84->Name = L"label84";
-			this->label84->Size = System::Drawing::Size(33, 13);
-			this->label84->TabIndex = 34;
-			this->label84->Text = L"None";
+			this->textBox46->Location = System::Drawing::Point(870, 119);
+			this->textBox46->Name = L"textBox46";
+			this->textBox46->Size = System::Drawing::Size(100, 20);
+			this->textBox46->TabIndex = 32;
+			this->textBox46->Text = L"2";
 			// 
 			// Form1
 			// 

@@ -38,6 +38,7 @@ struct ConvergedMissionDisplay
 {
 	double Launchtime = 0.0; //GMT
 
+	double T_EOI = 0.0; //GET
 	double TLIIgnitionTime = 0.0; //GET
 	double TLICutoffTime = 0.0; //GET
 	double dv_TLI = 0.0; //ft/s
@@ -94,6 +95,7 @@ struct OptimizedFullMissionInputs
 	int AltitudeOption; //1 = 90 NM, 2 = 100 NM parking orbit
 	int Opportunity; //1 or 2
 	int Window; //1 = Pacific window, 2 = Atlantic window
+	int TLI1stOppOrbit; //Orbit on which the first TLI opportunity happens, usually 2, Apollo 17 was on rev 3 for its Atlantic window
 
 	double DT_TLI_LOI; //Time from TLI cutoff to LOI
 	bool FreeReturn;
@@ -241,7 +243,7 @@ public:
 	//Step 1: Landing site sun elevation evaluation
 	void LunarSunElevationAngle(int Year, int Month, int Day, double Hour, double Lat_SG, double Lng_SG, double &Elev, bool &Rising);
 	//Step 2: First guess logic
-	FirstGuessLogicDisplay CalculateFirstGuessLogic(int Year, int Month, int Day, double Azi, int AlitudeOption, int Window, int Opportunity, int Orbits, double Lat_SG, double Lng_SG);
+	FirstGuessLogicDisplay CalculateFirstGuessLogic(int Year, int Month, int Day, double Azi, int AlitudeOption, int Window, int Opportunity, int TLI1stOppOrbit, int Orbits, double Lat_SG, double Lng_SG);
 	//Step 3: Optimize full mission
 	int OptimizedFullMission(const PerformanceData &perf, const OptimizedFullMissionInputs &in, ConvergedMissionDisplay &out);
 
@@ -264,7 +266,7 @@ public:
 	std::vector<std::string> DebugMessages;
 protected:
 	bool SetupBasics(int Year, int Month, int Day);
-	int CIST(double Hour, OrbMech::SphericalCoordinates coord_EOI, int Window, int Opportunity, TLIFirstGuessOutputs &out);
+	int CIST(double Hour, OrbMech::SphericalCoordinates coord_EOI, int Window, int Opportunity, int TLI1stOppOrbit, TLIFirstGuessOutputs &out);
 	bool ConvergeInitialGuessTrajectory(bool FreeReturn); //Constraints are radius, latitude and time at pericynthion
 	bool ConvergeOptimizedFullMission(bool FreeReturn, double DT_TLI_LOI); //Constraints are radius, latitude and time at pericynthion
 	bool ConvergeDPSAbort();
